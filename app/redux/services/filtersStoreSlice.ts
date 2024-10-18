@@ -9,7 +9,7 @@ const initialState: any =
   lsStore.length === 0
     ? {
         motherboard: [],
-        cpu: [],
+        processor: [],
         ram: [],
         ["hdd,ssd"]: [],
         gpu: [],

@@ -7,14 +7,45 @@ interface ISearchComponentsHeader {
   headerName: { ru: string; slug: string };
   onClose?: () => void;
   setExpandFilter: (value: boolean) => void;
+  countOfComponents: number;
 }
 
 export function SearchComponentsHeader<T extends ISearchComponentsHeader>({
   onClose,
   headerName,
   setExpandFilter,
+  countOfComponents,
 }: T): React.ReactNode {
   const { isMobileWindow } = useIsMobileWindow();
+  function pluralize(count: number) {
+    //Функция для сколнения слова от числа
+    const pluralRules = new Intl.PluralRules("ru-RU");
+    const pluralForm = pluralRules.select(count);
+    let word;
+
+    switch (pluralForm) {
+      case "zero":
+        word = "нет товаров";
+        break;
+      case "one":
+        word = "товар";
+        break;
+      case "two":
+        word = "товара";
+        break;
+      case "few":
+        word = "товара";
+        break;
+      case "many":
+        word = "товаров";
+        break;
+      default:
+        word = "товаров";
+    }
+
+    return `${count} ${word}`;
+  }
+
   return (
     <div className="flex items-center justify-between gap-[10px]">
       <div className="flex items-center gap-[20px] max-lg:gap-[10px]">
@@ -22,7 +53,7 @@ export function SearchComponentsHeader<T extends ISearchComponentsHeader>({
           {headerName.ru}
         </h2>
         <h3 className="text-[32px] font-normal text-[#9E9E9E] max-lg:text-[20px]">
-          59 товаров
+          {pluralize(countOfComponents)}
         </h3>
       </div>
 

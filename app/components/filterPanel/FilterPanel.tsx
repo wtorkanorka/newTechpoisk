@@ -13,8 +13,7 @@ import { Skeleton } from "../skeleton/Skeleton";
 export const FilterPanel = memo(() => {
   const { searchTableName } = useSearchTableName();
 
-  const { filtersState } = useAdditionParamsForFilters();
-  const { isLoading, error, data, refetch } = useFetchFilters({
+  const { isLoading, error, data } = useFetchFilters({
     searchTableName,
   });
   return (
@@ -32,52 +31,53 @@ export const FilterPanel = memo(() => {
             });
           });
         })}
+
       {error && <p>Ошибка при получении фильтров</p>}
       {isLoading && (
         <>
           <div className="flex flex-col gap-[10px]">
-            <Skeleton isFull={true} height={10} />
+            <Skeleton height={"10px"} />
             <div className="flex items-center gap-[5px]">
-              <Skeleton width={14} height={14} />
-              <Skeleton isFull={true} height={14} />
+              <Skeleton width={"14px"} height={"14px"} />
+              <Skeleton height={"14px"} width={"100%"} />
             </div>
             <div className="flex items-center gap-[5px]">
-              <Skeleton width={14} height={14} />
-              <Skeleton isFull={true} height={14} />
+              <Skeleton width={"14px"} height={"14px"} />
+              <Skeleton height={"14px"} width={"100%"} />
             </div>
             <div className="flex items-center gap-[5px]">
-              <Skeleton width={14} height={14} />
-              <Skeleton isFull={true} height={14} />
-            </div>
-          </div>
-          <div className="flex flex-col gap-[10px]">
-            <Skeleton isFull={true} height={10} />
-            <div className="flex items-center gap-[5px]">
-              <Skeleton width={14} height={14} />
-              <Skeleton isFull={true} height={14} />
-            </div>
-            <div className="flex items-center gap-[5px]">
-              <Skeleton width={14} height={14} />
-              <Skeleton isFull={true} height={14} />
-            </div>
-            <div className="flex items-center gap-[5px]">
-              <Skeleton width={14} height={14} />
-              <Skeleton isFull={true} height={14} />
+              <Skeleton width={"14px"} height={"14px"} />
+              <Skeleton height={"14px"} width={"100%"} />
             </div>
           </div>
           <div className="flex flex-col gap-[10px]">
-            <Skeleton isFull={true} height={10} />
+            <Skeleton height={"10px"} />
             <div className="flex items-center gap-[5px]">
-              <Skeleton width={14} height={14} />
-              <Skeleton isFull={true} height={14} />
+              <Skeleton width={"14px"} height={"14px"} />
+              <Skeleton height={"14px"} width={"100%"} />
             </div>
             <div className="flex items-center gap-[5px]">
-              <Skeleton width={14} height={14} />
-              <Skeleton isFull={true} height={14} />
+              <Skeleton width={"14px"} height={"14px"} />
+              <Skeleton height={"14px"} width={"100%"} />
             </div>
             <div className="flex items-center gap-[5px]">
-              <Skeleton width={14} height={14} />
-              <Skeleton isFull={true} height={14} />
+              <Skeleton width={"14px"} height={"14px"} />
+              <Skeleton height={"14px"} width={"100%"} />
+            </div>
+          </div>
+          <div className="flex flex-col gap-[10px]">
+            <Skeleton height={"10px"} />
+            <div className="flex items-center gap-[5px]">
+              <Skeleton width={"14px"} height={"14px"} />
+              <Skeleton height={"14px"} width={"100%"} />
+            </div>
+            <div className="flex items-center gap-[5px]">
+              <Skeleton width={"14px"} height={"14px"} />
+              <Skeleton height={"14px"} width={"100%"} />
+            </div>
+            <div className="flex items-center gap-[5px]">
+              <Skeleton width={"14px"} height={"14px"} />
+              <Skeleton height={"14px"} width={"100%"} />
             </div>
           </div>
         </>

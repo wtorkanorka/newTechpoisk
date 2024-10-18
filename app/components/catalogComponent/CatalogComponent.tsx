@@ -24,7 +24,7 @@ interface ICatalogItemsArr {
 export const CatalogComponent = memo(() => {
   const catalogItemsArr: ICatalogItemsArr[] = [
     {
-      title: { ru: "Процессор", slug: "cpu" },
+      title: { ru: "Процессор", slug: "processor" },
       components: {
         firstColumn: {
           title: "",

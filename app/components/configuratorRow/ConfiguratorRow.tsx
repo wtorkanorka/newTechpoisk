@@ -1,20 +1,25 @@
 "use client";
+import { IComponentsResults, IComponentsResultsInStore } from "@/app/types";
 import React from "react";
+import { ConfiguratorRowComponent } from "./components/ConfiguratorRowComponent";
+import { namesSearchTableName } from "@/app/hooks/hooks";
+import plusIcon from "@/app/assets/icons/plus-icon-black.svg";
+import Image from "next/image";
 
 interface IConfiguratorRowProps {
   rowName: {
     ru: string;
-    slug: string;
+    slug: namesSearchTableName;
   };
   productCount: number;
-  howManyComponentsMustBe: string;
-  componentsArr: any[] | [];
+  howManyComponentsMustBe: "one" | "few";
+  componentsArr: IComponentsResultsInStore[] | [];
   isComparison: null | true | false;
 }
 export function ConfiguratorRow<T extends IConfiguratorRowProps>({
-  rowName = { ru: "", slug: "" },
+  rowName = { ru: "Процессор", slug: "processor" },
   productCount = 0,
-  howManyComponentsMustBe = "", // one | few //В конфигураторе есть поля где может быть только 1 компонет, например материнка
+  howManyComponentsMustBe = "one", // one | few //В конфигураторе есть поля где может быть только 1 компонет, например материнка
   componentsArr = [],
   isComparison = null,
 }: T) {
@@ -48,7 +53,13 @@ export function ConfiguratorRow<T extends IConfiguratorRowProps>({
   }
 
   return (
-    <div className="border-[1px] rounded-[20px] border-[#dde1e7] py-[31px] px-[35px] grid grid-cols-[0.9fr_2fr_1fr] gap-4 cursor-pointer ">
+    <div
+      className={`border-[1px] rounded-[20px] border-[#dde1e7] py-[31px] px-[35px] grid ${
+        componentsArr.length == 0
+          ? "grid-cols-[0.9fr_2fr_1fr]"
+          : "grid-cols-[0.4fr_2fr]"
+      } gap-4 cursor-pointer`}
+    >
       <div className="flex flex-col justify-center max-lg:items-start">
         {isComparison !== null ? (
           isComparison == true ? (
@@ -66,11 +77,34 @@ export function ConfiguratorRow<T extends IConfiguratorRowProps>({
         </h3>
       </div>
 
-      <p className="text-[17px] font-[300] text-[#9E9E9E] max-lg:text-[11px] self-center max-lg:text-center">
-        {pluralize(productCount)}
-      </p>
-
-      <div className="justify-self-end place-self-center">Тут кнопки</div>
+      {componentsArr.length == 0 && (
+        <p className="text-[17px] font-[300] text-[#9E9E9E] max-lg:text-[11px] self-center max-lg:text-center">
+          {pluralize(productCount)}
+        </p>
+      )}
+      {componentsArr.length !== 0 && (
+        <div className="flex flex-col">
+          {componentsArr.map((component, index) => {
+            return (
+              <ConfiguratorRowComponent
+                component={component}
+                key={index}
+                howManyComponentsMustBe={howManyComponentsMustBe}
+                rowName={rowName}
+              />
+            );
+          })}
+        </div>
+      )}
+      {componentsArr.length == 0 && (
+        <Image
+          src={plusIcon}
+          width={24}
+          height={24}
+          alt="plus"
+          className="min-w-[24px] max-lg:min-w-[17px] justify-self-end place-self-center"
+        />
+      )}
     </div>
   );
 }

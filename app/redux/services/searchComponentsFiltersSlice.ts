@@ -9,11 +9,11 @@ export interface IsearchComponentsFiltersSlice {
 const initialState: IsearchComponentsFiltersSlice = {
   searchComponents: {
     name: "Сначала дешёвые",
-    type: "cheap",
+    type: "price",
   },
   wishlist: {
     name: "Сначала дешёвые",
-    type: "cheap",
+    type: "price",
   },
 };
 

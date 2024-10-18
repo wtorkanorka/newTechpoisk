@@ -3,14 +3,27 @@ import { useAppDispatch, useAppSelector } from "../redux/hooks";
 import { setNewFilter } from "../redux/services/searchComponentsFiltersSlice";
 import { setNewSearchTableName } from "../redux/services/searchTableNameSlice";
 import { RootState } from "../redux/store";
-import { IFilters, ISelectFilterComponent } from "../types";
-import { toggleSelectedFilter } from "../redux/services/additionParamsForFiltersSlice";
+import {
+  IComponentsResults,
+  IComponentsResultsInStore,
+  IFilters,
+  IOffers,
+  IPropertyCategories,
+  ISelectFilterComponent,
+} from "../types";
+import { toggleSelectedFilter } from "../redux/services/additionalParamsForFiltersSlice";
 import {
   addFilterToStore,
   removeFilter,
   resetFilters,
 } from "../redux/services/filtersStoreSlice";
 import axios from "axios";
+import {
+  addComponentToStore,
+  changeCountOfComponents,
+  removeComponentFromStore,
+} from "../redux/services/componentsStoreSlice";
+import { addComponentWishlist } from "../redux/services/wishlistSlice";
 
 export type namesSearchTableName =
   | "motherboard"
@@ -89,7 +102,7 @@ export const useAdditionParamsForFilters = (): {
   ) => void;
 } => {
   const filtersState = useAppSelector(
-    (state) => state.additionParamsForFiltersReducer
+    (state) => state.additionalParamsForFiltersReducer
   ) as FilterState;
   const dispatch = useAppDispatch();
   const toggleFilter = (
@@ -146,7 +159,7 @@ const getFiltersId = ({
 }) => {
   const ids: { [key: string]: number | number[] } = {
     motherboard: 1,
-    cpu: 2,
+    processor: 2,
     ram: 3,
     "hdd,ssd": [4, 5],
     gpu: 6,
@@ -167,10 +180,14 @@ export const useFetchFilters = ({
   error: boolean;
   data: any;
   refetch: () => void;
+  // testData: null | {
+  //   [key: string]: any;
+  // };
 } => {
   const [isLoading, setIsLoading] = useState(false);
   const [data, setData] = useState<IFilters | null>(null);
   const [error, setError] = useState<boolean>(false);
+
   const fetchFilters = async () => {
     setIsLoading(true);
     setError(false);
@@ -180,8 +197,8 @@ export const useFetchFilters = ({
           searchTableName,
         })}/?hideNonFilterProps=true&showValues=always&showCount=true`
       );
+
       setData(response.data);
-      console.log(response.data);
       return response.data;
     } catch (error) {
       setError(true);
@@ -196,5 +213,127 @@ export const useFetchFilters = ({
   const refetch = async () => {
     fetchFilters();
   };
-  return { isLoading, error, data, refetch };
+  return {
+    isLoading,
+    error,
+    data,
+    refetch,
+  };
+};
+
+export const useComponentsStore = () => {
+  const componentsStore = useAppSelector(
+    (state) => state.componentsStoreReducer
+  );
+  const dispatch = useAppDispatch();
+  const addComponent = ({
+    searchTableName,
+    data,
+    offer,
+    countOfComponents = 1,
+  }: {
+    searchTableName: { ru: string; slug: namesSearchTableName };
+    data: IComponentsResults;
+    offer: IOffers;
+    countOfComponents: number;
+  }) => {
+    dispatch(
+      addComponentToStore({
+        searchTableName: searchTableName,
+        component: {
+          ...data,
+          selectedOffer: offer,
+          countOfComponents: countOfComponents,
+        },
+      })
+    );
+  };
+  const isInStore = ({
+    searchTableName,
+    data,
+  }: {
+    searchTableName: { ru: string; slug: namesSearchTableName };
+    data: IComponentsResultsInStore;
+  }) => {
+    const answer = componentsStore[searchTableName.slug]?.some(
+      (elem: IComponentsResultsInStore) =>
+        elem.selectedOffer.id == data.selectedOffer.id
+    );
+
+    return answer;
+  };
+  const removeComponent = ({
+    searchTableName,
+    data,
+  }: {
+    searchTableName: { ru: string; slug: namesSearchTableName };
+    data: IComponentsResultsInStore;
+  }) => {
+    dispatch(
+      removeComponentFromStore({
+        searchTableName,
+        component: data,
+      })
+    );
+  };
+  const getAllIds = (): number[] => {
+    const allIds: number[] = [];
+
+    Object.values(componentsStore).forEach((components: unknown) => {
+      const componentsArray = components as IComponentsResults[];
+      allIds.push(
+        ...componentsArray.map((component: IComponentsResults) => component.id)
+      );
+    });
+    return allIds;
+  };
+  const changeCount = ({
+    offerId,
+    searchTableName,
+    count,
+  }: {
+    offerId: number;
+    searchTableName: { ru: string; slug: namesSearchTableName };
+    count: number;
+  }) => {
+    console.table({ offerId, searchTableName, count });
+    dispatch(changeCountOfComponents({ offerId, searchTableName, count }));
+  };
+
+  return {
+    componentsStore,
+    addComponent,
+    removeComponent,
+    isInStore,
+    getAllIds,
+    changeCount,
+  };
+};
+
+export const useWishlistStore = () => {
+  const wishlistStore = useAppSelector((state) => state.wishlistReducer);
+  const dispatch = useAppDispatch();
+  const addComponentToWishlist = ({
+    component,
+    price,
+    name,
+    id,
+    isAssembly,
+  }: {
+    component: IComponentsResults;
+    price: number;
+    name: string;
+    id: number | string;
+    isAssembly: boolean;
+  }) => {
+    const data = {
+      component,
+      price,
+      name,
+      id,
+      isAssembly,
+    };
+    dispatch(addComponentWishlist(data));
+  };
+  return { wishlistStore, addComponentToWishlist };
 };

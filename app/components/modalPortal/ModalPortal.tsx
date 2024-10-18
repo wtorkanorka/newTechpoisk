@@ -44,7 +44,7 @@ const ModalPortal = ({
       }}
     >
       <div
-        className={`bg-white p-[20px] max-lg:p-[10px] rounded-md shadow-md text-center flex items-center justify-center h-full max-w-[90vw] max-h-[80vh] ${innerClasses}`}
+        className={`bg-white lg:w-full p-[20px] max-lg:p-[10px] rounded-md shadow-md text-center flex items-center justify-center h-full max-w-[90vw] max-h-[80vh] ${innerClasses}`}
       >
         {children}
       </div>

@@ -1,51 +1,49 @@
+import { IComponentsResults, IComponentsResultsInStore } from "@/app/types";
 import { createSlice, nanoid } from "@reduxjs/toolkit";
 
-interface wishList {
-  id: number;
+export interface IWishList {
+  component: IComponentsResults;
+  price: number;
   name: string;
+  id: number | string;
   isAssembly: boolean;
-  component: any;
 }
 
-const initialState: wishList[] =
+const lsStore =
   typeof window !== "undefined"
-    ? JSON.parse(String(localStorage.getItem("wishList"))) || []
+    ? JSON.parse(String(localStorage.getItem("wishlistTechpoisk")) || "") || []
     : [];
+const initialState: IWishList[] = lsStore.length === 0 ? [] : lsStore;
 
-export const wishListSlice = createSlice({
-  name: "wishListSlice",
+export const wishlistSlice = createSlice({
+  name: "wishlistSlice",
   initialState,
   reducers: {
-    addToWishList: (state, action) => {
-      const data = {
-        id: action.payload.id,
-        name: action.payload.name,
-        isAssembly: action.payload.isAssembly,
-        component: action.payload.component,
-      };
-      state.push(data);
-      localStorage.setItem("wishList", JSON.stringify(state));
-    },
-    removeFromWishList: (state, action) => {
-      const filteredData = state.filter(
-        (item) => item.id !== action.payload.id
-      );
-      localStorage.setItem("wishList", JSON.stringify(filteredData));
-
-      return filteredData;
-    },
-    editName: (state, action) => {
-      const index = state.findIndex((item) => item.id === action.payload.id);
-      if (index !== -1) {
-        state[index].name = action.payload.name;
-        localStorage.setItem("wishList", JSON.stringify(state));
+    addComponentWishlist: (
+      state,
+      action: {
+        payload: {
+          component: IComponentsResults;
+          price: number;
+          name: string;
+          id: number | string;
+          isAssembly: boolean;
+        };
       }
-
-      return state;
+    ) => {
+      const element = {
+        component: action.payload.component,
+        price: action.payload.price,
+        name: action.payload.name,
+        id: action.payload.id,
+        isAssembly: action.payload.isAssembly,
+      };
+      state.push(element);
+      console.log(element, "AAAAAAAAAAAAA");
+      localStorage.setItem("wishlistTechpoisk", JSON.stringify(state));
     },
   },
 });
 
-export const { addToWishList, removeFromWishList, editName } =
-  wishListSlice.actions;
-export default wishListSlice.reducer;
+export const { addComponentWishlist } = wishlistSlice.actions;
+export default wishlistSlice.reducer;

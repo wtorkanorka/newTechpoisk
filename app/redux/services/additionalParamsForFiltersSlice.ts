@@ -9,8 +9,8 @@ const initialState: {
   ssd: false,
 };
 
-export const additionParamsForFiltersSlice = createSlice({
-  name: "additionParamsForFiltersSlice",
+export const additionalParamsForFiltersSlice = createSlice({
+  name: "additionalParamsForFiltersSlice",
   initialState,
   reducers: {
     toggleSelectedFilter: (state, action) => {
@@ -20,5 +20,5 @@ export const additionParamsForFiltersSlice = createSlice({
   },
 });
 
-export const { toggleSelectedFilter } = additionParamsForFiltersSlice.actions;
-export default additionParamsForFiltersSlice.reducer;
+export const { toggleSelectedFilter } = additionalParamsForFiltersSlice.actions;
+export default additionalParamsForFiltersSlice.reducer;

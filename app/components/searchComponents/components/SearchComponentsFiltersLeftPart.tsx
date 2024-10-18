@@ -12,10 +12,28 @@ import Image from "next/image";
 interface ISearchComponentsFiltersLeftPart {
   expandFilter: boolean;
   setExpandFilter: (value: boolean) => void;
+  compatibleState: boolean;
+  setCompatibleState: any;
+  searchInput: string;
+  setSearchInput: any;
+  priceState: {
+    minPriceState: number;
+    setMinPriceState: any;
+    maxPriceState: number;
+    setMaxPriceState: any;
+  };
 }
 
 export const SearchComponentsFiltersLeftPart = memo(
-  ({ expandFilter, setExpandFilter }: ISearchComponentsFiltersLeftPart) => {
+  ({
+    expandFilter,
+    setExpandFilter,
+    setCompatibleState,
+    compatibleState,
+    searchInput,
+    setSearchInput,
+    priceState,
+  }: ISearchComponentsFiltersLeftPart) => {
     const { isMobileWindow } = useIsMobileWindow();
     const { searchTableName } = useSearchTableName();
     const { filtersState, toggleFilter } = useAdditionParamsForFilters();
@@ -24,14 +42,12 @@ export const SearchComponentsFiltersLeftPart = memo(
       <div
         className={`${
           //   isMobileWindow && !expandFilter ? "hidden" : ""
-          isMobileWindow && !expandFilter
-            ? "translate-x-[-200%] w-[0px]"
-            : "min-w-[230px] "
+          isMobileWindow && !expandFilter ? "translate-x-[-200%] w-[0px]" : ""
         } overflow-y-auto ${
           isMobileWindow && expandFilter
-            ? "translate-x-[0%] fixed inset-0 w-full overscroll-contain bg-[white] overflow-y-auto p-[10px] pb-[61px] z-[5]"
+            ? "translate-x-[0%] fixed inset-0 w-full overscroll-contain bg-[white] overflow-y-auto p-[10px] pb-[61px]  max-w-[100%] z-20"
             : ""
-        } flex flex-col items-start h-full max-lg:h-[calc(100%-61px)] transition-all`}
+        } flex flex-col items-start h-full max-lg:h-[calc(100%-61px)] transition-all lg:max-w-[230px]`}
       >
         {isMobileWindow && (
           <button
@@ -61,10 +77,16 @@ export const SearchComponentsFiltersLeftPart = memo(
             </svg>
           </button>
         )}
-        <SearchComponentsInput />
+        <SearchComponentsInput setSearchInput={setSearchInput} />
         <h3 className="text-[20px] font-[600] mt-[21px]">Фильтры</h3>
         <label className="flex items-center gap-[4px] w-full hover:opacity-60 select-none">
-          <input type="checkbox" name="" id="" defaultChecked={true} />{" "}
+          <input
+            type="checkbox"
+            name=""
+            id=""
+            checked={compatibleState}
+            onChange={(event) => setCompatibleState((prev: boolean) => !prev)}
+          />{" "}
           <p className="text-[20px] font-[300]">Совместимо</p>
         </label>
         {searchTableName.slug === "hdd,ssd" && (
@@ -143,13 +165,23 @@ export const SearchComponentsFiltersLeftPart = memo(
           <div className="flex gap-[5px] items-center">
             <input
               type="text"
-              placeholder="От"
+              placeholder={`От ${priceState.minPriceState}`}
               className="py-[6px] px-[20px] border border-[#dde1e7] rounded-[25px] outline-none w-full"
+              pattern="[0-9]*"
+              onChange={(e) => {
+                e.stopPropagation();
+                priceState.setMinPriceState(Number(e.currentTarget.value));
+              }}
             />
             <input
               type="text"
-              placeholder="До"
+              placeholder={`До ${priceState.maxPriceState}`}
               className="py-[6px] px-[20px] border border-[#dde1e7] rounded-[25px] outline-none w-full"
+              pattern="[0-9]*"
+              onChange={(e) => {
+                e.stopPropagation();
+                priceState.setMaxPriceState(Number(e.currentTarget.value));
+              }}
             />
           </div>
         </div>

@@ -1,24 +1,18 @@
-"use client";
-
+import { IWishList } from "@/app/redux/services/wishlistSlice";
 import Image from "next/image";
-import React, { memo, useEffect, useState } from "react";
-import settingImg from "@/app/assets//icons/settingImg.svg";
-import arrowDownWhite from "@/app/assets/icons/arrow-down-white.svg";
-import heartGrayIcon from "@/app/assets/icons/heart-icon-gray.svg";
-import comparisonGrayIcon from "@/app/assets/icons/comparison-icon-gray.svg";
 import Link from "next/link";
-import { SellersComponents } from "./components/SellersComponents";
-import { ProductManagerButton } from "../productManagerButton/ProductManagerButton";
-import ModalPortal from "../modalPortal/ModalPortal";
-import { useIsMobileWindow, useWishlistStore } from "@/app/hooks/hooks";
-import { IComponentsGlobal, IComponentsResults, IOffers } from "@/app/types";
-import { nanoid } from "@reduxjs/toolkit";
+import React, { memo, useState } from "react";
+import settingImg from "@/app/assets/icons/settingImg.svg";
+import arrowDownWhite from "@/app/assets/icons/arrow-down-white.svg";
+import { ProductManagerButton } from "@/app/components/productManagerButton/ProductManagerButton";
+import { useIsMobileWindow } from "@/app/hooks/hooks";
+import { SellersComponents } from "@/app/components/productRowComponent/components/SellersComponents";
+import { IOffers } from "@/app/types";
 
-export const ProductRowComponent = memo(
-  ({ data }: { data: IComponentsResults }) => {
-    const { isMobileWindow } = useIsMobileWindow();
-    const { addComponentToWishlist, wishlistStore } = useWishlistStore();
+export const WishListComponentRow = memo(
+  ({ product }: { product: IWishList }) => {
     const [isShowPrices, setIsShowPrices] = useState(false);
+    const { isMobileWindow } = useIsMobileWindow();
     function findMinAndMaxPrice(array: IOffers[]): string {
       //Возвращает строку такого типа 10 000 - 10 490 ₽
 
@@ -48,16 +42,18 @@ export const ProductRowComponent = memo(
           >
             <Image
               src={
-                data.pictures && data.pictures[0]
-                  ? data.pictures[0].url
+                product.component.pictures && product.component.pictures[0]
+                  ? product.component.pictures[0].url
                   : settingImg
               }
               width={
-                data.pictures && data.pictures[0] ? data.pictures[0].width : 97
+                product.component.pictures && product.component.pictures[0]
+                  ? product.component.pictures[0].width
+                  : 97
               }
               height={
-                data.pictures && data.pictures[0]
-                  ? data.pictures[0].height
+                product.component.pictures && product.component.pictures[0]
+                  ? product.component.pictures[0].height
                   : 120
               }
               alt="productRowCard"
@@ -65,10 +61,10 @@ export const ProductRowComponent = memo(
             />
             <div className="flex flex-col gap-[6px] max-w-[466px]">
               <h3 className="text-left text-[24px] font-[400] max-lg:text-[16px]">
-                {data.name}
+                {product.name}
               </h3>
               <p className="text-left text-[18px] font-[400] text-[#9e9e9e] max-lg:text-[12px]">
-                {data?.propertyCategories.properties
+                {product.component?.propertyCategories.properties
                   ?.map((prop: any) => prop.value)
                   .join(", ")}
               </p>
@@ -77,7 +73,7 @@ export const ProductRowComponent = memo(
           <div className="flex items-end gap-[27px] max-lg:w-full max-lg:justify-between">
             <div className="flex items-center flex-col gap-[16px]">
               <p className="text-[24px] font-[600] max-lg:text-[16px] text-center w-full">
-                {findMinAndMaxPrice(data.offers)}
+                {findMinAndMaxPrice(product.component.offers)}
               </p>
               <button
                 onClick={(event) => {
@@ -97,26 +93,10 @@ export const ProductRowComponent = memo(
                 />
               </button>
             </div>
-            <div className="flex items-center gap-[20px] min-w-[80px] max-lg:gap-[10px]">
-              <ProductManagerButton
-                isWishListButton={true}
-                iconSize={30}
-                onClickFunc={() => {
-                  const minPrice = Math.min(
-                    ...data.offers.map((item) => item.price)
-                  );
-                  const dataForWishlist = {
-                    component: data,
-                    price: minPrice, //Для компонента я испльзую минимальную цену
-                    name: data.name,
-                    isAssembly: false,
-                    id: nanoid(),
-                  };
-                  addComponentToWishlist(dataForWishlist);
-                }}
-              />
-              {/* <ProductManagerButton isComparisonButton={true} iconSize={30} /> */}
-            </div>
+            <button className="min-w-[32px] max-w-[33px] rounded-[50%] flex items-center justify-center p-[7px]">
+              <ProductManagerButton isWishListButton={true} />
+              {/* TODO: Доделать избранное, Сделать удаление элементов из стора */}
+            </button>
           </div>
         </div>
         <div
@@ -142,9 +122,12 @@ export const ProductRowComponent = memo(
                 ? "flex flex-col justify-end items-center translate-y-[0%]!"
                 : "translate-y-[100%]"
             }
-          transition-all`}
+      transition-all`}
           >
-            <SellersComponents offers={data.offers} data={data} />
+            <SellersComponents
+              offers={product.component.offers}
+              data={product.component}
+            />
           </div>
         </div>
       </>

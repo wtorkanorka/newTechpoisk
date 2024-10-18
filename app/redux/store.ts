@@ -1,18 +1,20 @@
 import { configureStore } from "@reduxjs/toolkit";
 
-import wishListReducer from "./services/wishListSlice";
 import searchTableNameReducer from "./services/searchTableNameSlice";
 import searchComponentsFiltersReducer from "./services/searchComponentsFiltersSlice";
-import additionParamsForFiltersReducer from "./services/additionParamsForFiltersSlice";
+import additionalParamsForFiltersReducer from "./services/additionalParamsForFiltersSlice";
 import filtersStoreReducer from "./services/filtersStoreSlice";
+import componentsStoreReducer from "./services/componentsStoreSlice";
+import wishlistReducer from "./services/wishlistSlice";
 
 export const store = configureStore({
   reducer: {
-    wishListReducer,
     searchTableNameReducer,
     searchComponentsFiltersReducer,
-    additionParamsForFiltersReducer,
+    additionalParamsForFiltersReducer,
     filtersStoreReducer,
+    componentsStoreReducer,
+    wishlistReducer,
   },
 });
 

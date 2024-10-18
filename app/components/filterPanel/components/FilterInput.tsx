@@ -32,7 +32,7 @@ export const FilterInput = memo(
       useFiltersStore();
     const [isChecked, setIsChecked] = useState(false);
     const isExist = ({ slug }: { slug: string }): boolean => {
-      return filtersStore[slug].some(
+      return filtersStore[slug]?.some(
         (filter: { filterName: string; containerName: string }) =>
           filter.filterName == String(value.value) &&
           filter.containerName == containerName

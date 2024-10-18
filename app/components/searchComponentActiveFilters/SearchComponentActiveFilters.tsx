@@ -6,7 +6,11 @@ export const SearchComponentActiveFilters = () => {
   const { filtersStore, deleteFilterFromStore, clearAllFilters } =
     useFiltersStore();
   return (
-    <div className="flex gap-[5px] max-w-full items-center overflow-x-auto pb-[10px] min-h-[57px]">
+    <div
+      className={`flex gap-[5px] max-w-full items-center overflow-x-auto pb-[10px] ${
+        filtersStore[searchTableName.slug].length !== 0 ? "min-h-[57px]" : "h-0"
+      }`}
+    >
       {filtersStore[searchTableName.slug] &&
         filtersStore[searchTableName.slug].map(
           (

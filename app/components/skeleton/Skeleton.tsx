@@ -1,18 +1,20 @@
 import React, { memo } from "react";
 
 interface RectangleProps {
-  width?: number;
-  height: number;
-  isFull?: boolean;
+  width?: string;
+  height?: string;
+  classes?: string;
 }
 export const Skeleton = memo(
-  ({ width = 10, height = 10, isFull = false }: RectangleProps) => {
+  ({ width = "", height = "", classes }: RectangleProps) => {
     return (
       <div
-        className={`animate-pulse bg-[#8b8b8b] rounded-[43px]`}
+        className={`animate-pulse bg-[#8b8b8b] rounded-[43px] ${
+          classes && classes
+        }`}
         style={{
-          width: isFull ? "100%" : `${width}px`,
-          height: `${height}px`,
+          width: width,
+          height: height,
         }}
       />
     );
