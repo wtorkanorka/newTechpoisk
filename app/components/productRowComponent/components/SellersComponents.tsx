@@ -9,13 +9,14 @@ import { useComponentsStore, useSearchTableName } from "@/app/hooks/hooks";
 
 export const SellersComponents = memo(
   ({ offers, data }: { offers: IOffers[]; data: IComponentsResults }) => {
-    const { addComponent, isInStore, removeComponent } = useComponentsStore();
+    const { addComponent, selectedOfferIsInStore, removeComponent } =
+      useComponentsStore();
     const { searchTableName } = useSearchTableName();
 
     return (
       <div className="grid grid-cols-3 py-[18px] border-b border-[#dde1e7] bg-[white] max-xl:grid-cols-2 max-lg:grid-cols-3 max-lg:w-full shadow-xl max-lg:mb-[61px]">
         {offers.map((offer) => {
-          const isActive = isInStore({
+          const isActive = selectedOfferIsInStore({
             searchTableName,
             data: {
               ...data,
@@ -34,6 +35,7 @@ export const SellersComponents = memo(
                 isConfigurationButton={true}
                 textContent={`${offer.store.name} - ${offer.price} ₽`}
                 iconSize={17}
+                title="Добавить в конфигуратор"
                 onClickFunc={() => {
                   isActive
                     ? removeComponent({

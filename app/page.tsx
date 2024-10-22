@@ -9,6 +9,7 @@ import {
   setNewSearchTableName,
 } from "./redux/services/searchTableNameSlice";
 import {
+  namesSearchTableName,
   useComponentsStore,
   useIsMobileWindow,
   useSearchTableName,
@@ -16,18 +17,66 @@ import {
 import { SearchComponents } from "./components/searchComponents/SearchComponents";
 import { FeedbackComponent } from "./components/feedbackComponent/FeedbackComponent";
 import { BuyConfigurationComponent } from "./components/buyConfigurationComponent/BuyConfigurationComponent";
-
-interface IconfiguratorArr {
-  rowName: { ru: string; slug: string };
-  productCount: number;
-  howManyComponentsMustBe: string;
-  componentsArr: any[];
-  isComparison: null | boolean;
-}
+import axios from "axios";
+import { IComponentsResults, IComponentsResultsInStore } from "./types";
 
 export default function Home() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [renderItems, setRenderItems] = useState<boolean>(false);
+  const [incompatibleIdsArr, setnIcompatibleIdsArr] = useState<{
+    incompatible: number[];
+  }>({ incompatible: [] });
+
+  const { getAllIds } = useComponentsStore();
+
+  const [countOfComponents, setCountOfComponents] = useState<
+    { componentType_Slug: string; count: number }[]
+  >([
+    {
+      componentType_Slug: "gpu",
+      count: 0,
+    },
+    {
+      componentType_Slug: "ssd",
+      count: 0,
+    },
+    {
+      componentType_Slug: "case_fans",
+      count: 0,
+    },
+    {
+      componentType_Slug: "processor",
+      count: 0,
+    },
+    {
+      componentType_Slug: "hdd",
+      count: 0,
+    },
+    {
+      componentType_Slug: "motherboard",
+      count: 0,
+    },
+    {
+      componentType_Slug: "case",
+      count: 0,
+    },
+    {
+      componentType_Slug: "liquid_cooling",
+      count: 0,
+    },
+    {
+      componentType_Slug: "power_supply",
+      count: 0,
+    },
+    {
+      componentType_Slug: "ram",
+      count: 0,
+    },
+    {
+      componentType_Slug: "cooler",
+      count: 0,
+    },
+  ]);
   const { searchTableName, setSearchTableName } = useSearchTableName();
   const { componentsStore } = useComponentsStore();
 
@@ -39,34 +88,89 @@ export default function Home() {
     setIsModalOpen(false);
   };
 
-  // const items = useCallback(() => {
-  //   return configuratorArr.map((e: IconfiguratorArr, index: number) => {
-  //     return (
-  //       <div
-  //         key={index}
-  //         onClick={(event) => {
-  //           event.stopPropagation();
-  //           setSearchTableName({
-  //             ru: e.rowName.ru,
-  //             slug: e.rowName.slug,
-  //           });
-  //           handleOpenModal();
-  //         }}
-  //       >
-  //         <ConfiguratorRow key={index} {...e} />
-  //       </div>
-  //     );
-  //   });
-  // }, [renderItems, componentsStore]);
+  async function checkCompatibleIds() {
+    try {
+      const ids = getAllIds().join(",");
+      const response = await axios.get(
+        `https://techpoisk.com:8443/checkCompatibility/?ids=${ids}`
+      );
+      const data = response.data;
+
+      setnIcompatibleIdsArr(data);
+    } catch (e) {
+      console.log(e);
+    }
+  }
+
+  async function getCountOfComponentsInConfigurator() {
+    try {
+      const response = await axios.get(
+        "https://techpoisk.com:8443/componentTypeCount"
+      );
+      const data = response.data;
+      setCountOfComponents(data);
+      setRenderItems(true);
+    } catch (e) {
+      console.log(e);
+    }
+  }
   useEffect(() => {
-    // Это нужно для того, чтобы небыло ошибки при гидратации, тут по сути я при начальном рендере выставляю true для того чтобы отрисовать элементы, иначе я не знаю как починить ssr
-    setRenderItems(true);
+    getCountOfComponentsInConfigurator();
+    checkCompatibleIds();
   }, [componentsStore]);
+
+  const isIncompatible = (components: IComponentsResults[]) =>
+    components?.length !== 0 || incompatibleIdsArr.incompatible.length == 0
+      ? components?.some((component) =>
+          incompatibleIdsArr.incompatible.flat().includes(component.id)
+        ) ?? null
+      : null;
+
+  const incompatibleData: { [key: string]: boolean | null } = {
+    motherboard:
+      componentsStore["motherboard"].length !== 0
+        ? !isIncompatible(componentsStore["motherboard"])
+        : null,
+    processor:
+      componentsStore["processor"].length !== 0
+        ? !isIncompatible(componentsStore["processor"])
+        : null,
+    ram:
+      componentsStore["ram"].length !== 0
+        ? !isIncompatible(componentsStore["ram"])
+        : null,
+    "hdd,ssd":
+      componentsStore["hdd,ssd"].length !== 0
+        ? !isIncompatible(componentsStore["hdd,ssd"])
+        : null,
+    gpu:
+      componentsStore["gpu"].length !== 0
+        ? !isIncompatible(componentsStore["gpu"])
+        : null,
+    power_supply:
+      componentsStore["power_supply"].length !== 0
+        ? !isIncompatible(componentsStore["power_supply"])
+        : null,
+    case:
+      componentsStore["case"].length !== 0
+        ? !isIncompatible(componentsStore["case"])
+        : null,
+    "cooler,liquid_cooling,case_fans":
+      componentsStore["cooler,liquid_cooling,case_fans"].length !== 0
+        ? !isIncompatible(componentsStore["cooler,liquid_cooling,case_fans"])
+        : null,
+  };
+
   return (
     <>
       <h1 className="text-[32px] font-[400] mt-[50px]">Конфигуратор ПК</h1>
       <div className="w-full h-[1px] bg-[#dde1e7] mt-[15px] mb-[30px]" />
-      <h2 className="text-[24px] font-[400] mb-[30px]">Системный блок</h2>
+      <div className="flex gap-[10px] max-lg:justify-between max-lg:items-center">
+        <h2 className="text-[24px] font-[400] mb-[30px]">Системный блок</h2>
+        <button className="lg:hidden flex items-center text-center">
+          Сюда кнопку добавить
+        </button>
+      </div>
       <div className="flex gap-[10px] items-start justify-between max-lg:flex-col">
         {renderItems && (
           <ul className="flex flex-col gap-[10px] w-full">
@@ -81,10 +185,14 @@ export default function Home() {
               }}
             >
               <ConfiguratorRow
-                productCount={0}
+                productCount={
+                  countOfComponents.find(
+                    (item) => item.componentType_Slug === "motherboard"
+                  )?.count || 0
+                }
                 howManyComponentsMustBe="one"
                 componentsArr={[...componentsStore["motherboard"]]}
-                isComparison={null}
+                isComparison={incompatibleData.motherboard}
                 rowName={{ ru: "Материнская плата", slug: "motherboard" }}
               />
             </div>
@@ -99,10 +207,14 @@ export default function Home() {
               }}
             >
               <ConfiguratorRow
-                productCount={1}
+                productCount={
+                  countOfComponents.find(
+                    (item) => item.componentType_Slug === "processor"
+                  )?.count || 0
+                }
                 howManyComponentsMustBe="one"
                 componentsArr={[...componentsStore["processor"]]}
-                isComparison={null}
+                isComparison={incompatibleData.processor}
                 rowName={{ ru: "Процессор", slug: "processor" }}
               />
             </div>
@@ -117,10 +229,14 @@ export default function Home() {
               }}
             >
               <ConfiguratorRow
-                productCount={2}
+                productCount={
+                  countOfComponents.find(
+                    (item) => item.componentType_Slug === "gpu"
+                  )?.count || 0
+                }
                 howManyComponentsMustBe="few"
                 componentsArr={[...componentsStore["gpu"]]}
-                isComparison={null}
+                isComparison={incompatibleData.gpu}
                 rowName={{ ru: "Видеокарта", slug: "gpu" }}
               />
             </div>
@@ -135,10 +251,14 @@ export default function Home() {
               }}
             >
               <ConfiguratorRow
-                productCount={3}
+                productCount={
+                  countOfComponents.find(
+                    (item) => item.componentType_Slug === "ram"
+                  )?.count || 0
+                }
                 howManyComponentsMustBe="few"
                 componentsArr={[...componentsStore["ram"]]}
-                isComparison={null}
+                isComparison={incompatibleData.ram}
                 rowName={{ ru: "Оперативная память", slug: "ram" }}
               />
             </div>
@@ -153,12 +273,24 @@ export default function Home() {
               }}
             >
               <ConfiguratorRow
-                productCount={4}
+                productCount={
+                  (countOfComponents.find(
+                    (item) => item.componentType_Slug === "cooler"
+                  )?.count || 0) +
+                    (countOfComponents.find(
+                      (item) => item.componentType_Slug === "liquid_cooling"
+                    )?.count || 0) +
+                    (countOfComponents.find(
+                      (item) => item.componentType_Slug === "case_fans"
+                    )?.count || 0) || 0
+                }
                 howManyComponentsMustBe="few"
                 componentsArr={[
                   ...componentsStore["cooler,liquid_cooling,case_fans"],
                 ]}
-                isComparison={null}
+                isComparison={
+                  incompatibleData["cooler,liquid_cooling,case_fans"]
+                }
                 rowName={{
                   ru: "Охлаждение",
                   slug: "cooler,liquid_cooling,case_fans",
@@ -176,10 +308,14 @@ export default function Home() {
               }}
             >
               <ConfiguratorRow
-                productCount={5}
+                productCount={
+                  countOfComponents.find(
+                    (item) => item.componentType_Slug === "case"
+                  )?.count || 0
+                }
                 howManyComponentsMustBe="one"
                 componentsArr={[...componentsStore["case"]]}
-                isComparison={null}
+                isComparison={incompatibleData.case}
                 rowName={{ ru: "Копус", slug: "case" }}
               />
             </div>
@@ -194,10 +330,17 @@ export default function Home() {
               }}
             >
               <ConfiguratorRow
-                productCount={6}
+                productCount={
+                  (countOfComponents.find(
+                    (item) => item.componentType_Slug === "hdd"
+                  )?.count || 0) +
+                    (countOfComponents.find(
+                      (item) => item.componentType_Slug === "ssd"
+                    )?.count || 0) || 0
+                }
                 howManyComponentsMustBe="few"
                 componentsArr={[...componentsStore["hdd,ssd"]]}
-                isComparison={null}
+                isComparison={incompatibleData["hdd,ssd"]}
                 rowName={{ ru: "Хранение данных", slug: "hdd,ssd" }}
               />
             </div>
@@ -212,10 +355,14 @@ export default function Home() {
               }}
             >
               <ConfiguratorRow
-                productCount={7}
+                productCount={
+                  countOfComponents.find(
+                    (item) => item.componentType_Slug === "power_supply"
+                  )?.count || 0
+                }
                 howManyComponentsMustBe="one"
                 componentsArr={[...componentsStore["power_supply"]]}
-                isComparison={null}
+                isComparison={incompatibleData["power_supply"]}
                 rowName={{ ru: "Блок питания", slug: "power_supply" }}
               />
             </div>

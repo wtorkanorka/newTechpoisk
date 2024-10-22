@@ -38,13 +38,13 @@ export const CountOfComponentsChangerComponent = memo(
         <ul
           className={`${
             isExpand
-              ? "translate-x-0 w-[55px] opacity-100 transition-all"
+              ? "translate-x-0 opacity-100 transition-all"
               : "overflow-hidden opacity-0 pointer-events-none transition-all translate-x-[100px]"
           } absolute  bg-[white] shadow-xl`}
         >
-          <li className="flex items-center justify-center p-[3px] hover:bg-[#ddd] rounded-t-[4px]">
+          <li className="flex items-center justify-center hover:bg-[#ddd] rounded-t-[4px]">
             <button
-              className="text-center"
+              className="text-center py-[3px] px-[10px] whitespace-nowrap"
               onClick={(e) => {
                 e.stopPropagation();
                 changeCount({
@@ -58,9 +58,9 @@ export const CountOfComponentsChangerComponent = memo(
               1 шт
             </button>
           </li>
-          <li className="flex items-center justify-center p-[3px] hover:bg-[#ddd]">
+          <li className="flex items-center justify-center hover:bg-[#ddd] rounded-t-[4px]">
             <button
-              className="text-center"
+              className="text-center py-[3px] px-[10px] whitespace-nowrap"
               onClick={(e) => {
                 e.stopPropagation();
                 changeCount({
@@ -74,9 +74,9 @@ export const CountOfComponentsChangerComponent = memo(
               2 шт
             </button>
           </li>
-          <li className="flex items-center justify-center p-[3px] hover:bg-[#ddd]">
+          <li className="flex items-center justify-center hover:bg-[#ddd] rounded-t-[4px]">
             <button
-              className="text-center"
+              className="text-center py-[3px] px-[10px] whitespace-nowrap"
               onClick={(e) => {
                 e.stopPropagation();
                 changeCount({
@@ -90,9 +90,9 @@ export const CountOfComponentsChangerComponent = memo(
               3 шт
             </button>
           </li>
-          <li className="flex items-center justify-center p-[3px] hover:bg-[#ddd]">
+          <li className="flex items-center justify-center hover:bg-[#ddd] rounded-t-[4px]">
             <button
-              className="text-center"
+              className="text-center py-[3px] px-[10px] whitespace-nowrap"
               onClick={(e) => {
                 e.stopPropagation();
                 changeCount({
@@ -106,9 +106,9 @@ export const CountOfComponentsChangerComponent = memo(
               4 шт
             </button>
           </li>
-          <li className="flex items-center justify-center p-[3px] hover:bg-[#ddd]">
+          <li className="flex items-center justify-center hover:bg-[#ddd] rounded-t-[4px]">
             <button
-              className="text-center"
+              className="text-center py-[3px] px-[10px] whitespace-nowrap"
               onClick={(e) => {
                 e.stopPropagation();
                 changeCount({
@@ -122,9 +122,9 @@ export const CountOfComponentsChangerComponent = memo(
               5 шт
             </button>
           </li>
-          <li className="flex items-center justify-center p-[3px] hover:bg-[#ddd] rounded-b-[4px]">
+          <li className="flex items-center justify-center hover:bg-[#ddd] rounded-t-[4px]">
             <button
-              className="text-center"
+              className="text-center py-[3px] px-[10px] whitespace-nowrap"
               onClick={(e) => {
                 e.stopPropagation();
                 changeCount({

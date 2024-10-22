@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { useAppDispatch, useAppSelector } from "../redux/hooks";
 import { setNewFilter } from "../redux/services/searchComponentsFiltersSlice";
 import { setNewSearchTableName } from "../redux/services/searchTableNameSlice";
@@ -23,7 +23,13 @@ import {
   changeCountOfComponents,
   removeComponentFromStore,
 } from "../redux/services/componentsStoreSlice";
-import { addComponentWishlist } from "../redux/services/wishlistSlice";
+import {
+  addAssemblyWishlist,
+  addComponentWishlist,
+  deleteComponentFromWishlist,
+  editNameOfAssemblyWishlist,
+  IWishList,
+} from "../redux/services/wishlistSlice";
 
 export type namesSearchTableName =
   | "motherboard"
@@ -93,7 +99,11 @@ export const useIsMobileWindow = () => {
 };
 
 type FilterState = {
-  [K in "cooler" | "liquid_cooling" | "case_fans" | "hdd" | "ssd"]: boolean;
+  cooler: boolean;
+  liquid_cooling: boolean;
+  case_fans: boolean;
+  hdd: boolean;
+  ssd: boolean;
 };
 export const useAdditionParamsForFilters = (): {
   filtersState: FilterState;
@@ -222,9 +232,9 @@ export const useFetchFilters = ({
 };
 
 export const useComponentsStore = () => {
-  const componentsStore = useAppSelector(
-    (state) => state.componentsStoreReducer
-  );
+  const componentsStore: {
+    [key: string]: IComponentsResultsInStore[];
+  } = useAppSelector((state) => state.componentsStoreReducer);
   const dispatch = useAppDispatch();
   const addComponent = ({
     searchTableName,
@@ -248,7 +258,7 @@ export const useComponentsStore = () => {
       })
     );
   };
-  const isInStore = ({
+  const selectedOfferIsInStore = ({
     searchTableName,
     data,
   }: {
@@ -299,14 +309,46 @@ export const useComponentsStore = () => {
     console.table({ offerId, searchTableName, count });
     dispatch(changeCountOfComponents({ offerId, searchTableName, count }));
   };
+  const getPriceOfConfigurator = () => {
+    let totalPrice = 0;
 
+    Object.keys(componentsStore).forEach((key) => {
+      const components = componentsStore[key];
+
+      components.forEach((component) => {
+        const price = component.selectedOffer.price;
+        const quantity = component.countOfComponents || 1; // если quantity не указано, то считаем, что оно равно 1
+
+        if (price) {
+          totalPrice += price * quantity;
+        }
+      });
+    });
+
+    return totalPrice;
+  };
+  const componentIsInStore = ({
+    searchTableName,
+    data,
+  }: {
+    searchTableName: { ru: string; slug: namesSearchTableName };
+    data: IComponentsResults;
+  }) => {
+    const answer = componentsStore[searchTableName.slug]?.some(
+      (elem: IComponentsResults) => elem.id == data.id
+    );
+
+    return answer;
+  };
   return {
     componentsStore,
     addComponent,
     removeComponent,
-    isInStore,
+    selectedOfferIsInStore,
     getAllIds,
     changeCount,
+    getPriceOfConfigurator,
+    componentIsInStore,
   };
 };
 
@@ -335,5 +377,79 @@ export const useWishlistStore = () => {
     };
     dispatch(addComponentWishlist(data));
   };
-  return { wishlistStore, addComponentToWishlist };
+  const addAssemblyToWishlist = ({
+    component,
+    price,
+    name,
+    id,
+    isAssembly,
+  }: {
+    component: any;
+    price: number;
+    name: string;
+    id: number | string;
+    isAssembly: true;
+  }) => {
+    const data = {
+      component,
+      price,
+      name,
+      id,
+      isAssembly,
+    };
+    dispatch(addAssemblyWishlist(data));
+  };
+  const deleteFromWishlist = ({
+    id,
+    isAssembly,
+  }: {
+    id: string | number;
+    isAssembly?: boolean;
+  }) => {
+    const element = wishlistStore.find((elem) => elem.component.id === id);
+    dispatch(
+      deleteComponentFromWishlist({
+        id: element?.id || id,
+      })
+    );
+  };
+  const componentIsInWishlist = ({ id }: { id: string | number }): boolean => {
+    const isIn = wishlistStore.some(
+      (elem: IWishList) => elem.component.id === id
+    );
+    return isIn;
+  };
+  const editNameOfAssemblyInWishlist = ({
+    id,
+    name,
+  }: {
+    id: string | number;
+    name: string;
+  }) => {
+    dispatch(editNameOfAssemblyWishlist({ id, name }));
+  };
+  return {
+    wishlistStore,
+    addComponentToWishlist,
+    deleteFromWishlist,
+    componentIsInWishlist,
+    addAssemblyToWishlist,
+    editNameOfAssemblyInWishlist,
+  };
 };
+
+export function useDebounce(callback: any, delay: number) {
+  const timer: any = useRef();
+  const debouncedCallback = useCallback(
+    (...args: any) => {
+      if (timer.current) {
+        clearTimeout(timer.current);
+      }
+      timer.current = setTimeout(() => {
+        callback(...args);
+      }, delay);
+    },
+    [callback, delay]
+  );
+  return debouncedCallback;
+}

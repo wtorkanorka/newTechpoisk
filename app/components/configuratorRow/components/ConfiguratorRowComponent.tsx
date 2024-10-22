@@ -27,7 +27,7 @@ export const ConfiguratorRowComponent = memo(
     return (
       <div className="py-[9px] grid grid-cols-[2fr_0.5fr_0.5fr]">
         <Link
-          href="/"
+          href={`/ProductCard/${component.id}`}
           className="flex items-start gap-[28px] max-lg:items-center max-lg:gap-[13px]"
           onClick={(e) => {
             e.stopPropagation();
@@ -53,7 +53,7 @@ export const ConfiguratorRowComponent = memo(
         </Link>
         <div className="flex flex-col gap-[5px] items-center justify-center">
           <h4 className="text-[20px] fron-[600] max-lg:text-[10px]">
-            {component.selectedOffer.price} ₽
+            {component.selectedOffer.price * component.countOfComponents} ₽
           </h4>
           <p className="text-center text-[20px] font-[300] text-[#9e9e9e] max-lg:text-[12px]">
             {component.selectedOffer.store.name}

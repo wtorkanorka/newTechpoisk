@@ -1,7 +1,9 @@
 "use client";
 
 import {
+  useAdditionParamsForFilters,
   useComponentsStore,
+  useDebounce,
   useFiltersName,
   useFiltersStore,
   useSearchTableName,
@@ -17,7 +19,7 @@ import { SearchComponentsFiltersLeftPart } from "./components/SearchComponentsFi
 import { IComponentsGlobal } from "@/app/types";
 import axios from "axios";
 import { usePathname } from "next/navigation";
-import { groupBy, debounce } from "lodash";
+import { groupBy } from "lodash";
 
 interface ISearchComponents {
   onClose?: () => void;
@@ -31,18 +33,22 @@ export function SearchComponents<T extends ISearchComponents>({
   const [searchInput, setSearchInput] = useState("");
   const [minPriceState, setMinPriceState] = useState(0);
   const [maxPriceState, setMaxPriceState] = useState(100000);
-  const [countOfComponents, setCountOfComponents] = useState(0);
+  const [coolerState, setCoolerState] = useState(true);
+  const [caseFansState, setCaseFansState] = useState(true);
+  const [liquidCoolingState, setLiquidCoolingState] = useState(true);
+  const [hddState, setHddState] = useState(true);
+  const [ssdState, setSsdState] = useState(true);
+  const [pageState, setPageState] = useState<number>(1);
 
   const [isLoading, setIsLoading] = useState(false);
   const [isError, setIsError] = useState(false);
-  const [data, setData] = useState<IComponentsGlobal | null>(null);
+  const [dataState, setDataState] = useState<IComponentsGlobal | null>(null);
 
   const { searchTableName } = useSearchTableName();
   const { filtersStore } = useFiltersStore();
   const { filter } = useFiltersName("searchComponents");
   const { getAllIds } = useComponentsStore();
 
-  // const linkFromFilters = groupBy(filtersStore[searchTableName.slug], "containerName")
   function getLinkFromFilters() {
     const groupFiltersObject = groupBy(
       filtersStore[searchTableName.slug],
@@ -61,9 +67,37 @@ export function SearchComponents<T extends ISearchComponents>({
 
   async function getProductData() {
     const allIdsArr = getAllIds();
+    const changedComponentType =
+      searchTableName.slug == "cooler,liquid_cooling,case_fans"
+        ? `${
+            coolerState && caseFansState && liquidCoolingState
+              ? "cooler,liquid_cooling,case_fans"
+              : coolerState && caseFansState && !liquidCoolingState
+              ? "cooler,case_fans"
+              : coolerState && !caseFansState && liquidCoolingState
+              ? "cooler,liquid_cooling"
+              : coolerState && !caseFansState && !liquidCoolingState
+              ? "cooler"
+              : !coolerState && caseFansState && liquidCoolingState
+              ? "case_fans,liquid_cooling"
+              : !coolerState && caseFansState && !liquidCoolingState
+              ? "case_fans"
+              : !coolerState && !caseFansState && liquidCoolingState
+              ? "liquid_cooling"
+              : "cooler,liquid_cooling,case_fans"
+          }`
+        : searchTableName.slug === "hdd,ssd"
+        ? hddState && ssdState
+          ? "hdd,ssd"
+          : hddState && !ssdState
+          ? "hdd"
+          : !hddState && ssdState
+          ? "ssd"
+          : "hdd,ssd"
+        : searchTableName.slug;
     const componentType =
       pathname === "/"
-        ? `&componentType=${searchTableName.slug}`
+        ? `&componentType=${changedComponentType}`
         : "&componentType=processor"; //TODO: Если на странице конфигуратора то из стейта, если на странице поиска, то из ссылки
     const searchInputValue = searchInput !== "" ? `&search=${searchInput}` : "";
     const ordering = `&ordering=${filter.searchComponents.type}`;
@@ -76,17 +110,30 @@ export function SearchComponents<T extends ISearchComponents>({
     const hideIncompatible = "&hideIncompatible=true";
     const linkFromFilters = getLinkFromFilters();
     const hideNonShortProps = "&hide_non_short_props=true";
-
+    const page = pageState;
     try {
       setIsLoading(true);
       setIsError(false);
 
       const response = await axios.get(
-        `https://techpoisk.com:8443/components?page=1&pageSize=5${componentType}${searchInputValue}${ordering}${minPrice}${maxPrice}${compatibleWith}${hideIncompatible}${linkFromFilters}${hideNonShortProps}`
+        `https://techpoisk.com:8443/components?page=${page}&pageSize=5${componentType}${searchInputValue}${ordering}${minPrice}${maxPrice}${compatibleWith}${hideIncompatible}${linkFromFilters}${hideNonShortProps}`
       );
       const data: IComponentsGlobal = response.data;
-      setCountOfComponents(data.count);
-      setData(data);
+      if (dataState !== null && page !== 1) {
+        const newDataState = {
+          count: data.count,
+          countByValue: data.countByValue,
+          maxPrice: data.maxPrice,
+          minPrice: data.minPrice,
+          next: data.next,
+          previous: data.previous,
+          pageSize: data.pageSize,
+          results: [...dataState.results, ...data.results],
+        };
+        setDataState(newDataState);
+      } else {
+        setDataState(data);
+      }
     } catch (error) {
       console.log(error);
 
@@ -96,8 +143,13 @@ export function SearchComponents<T extends ISearchComponents>({
     }
   }
 
-  useEffect(() => {
+  const debouncedHandleChange = useDebounce(() => {
     getProductData();
+  }, 500); // Это блин работает :3
+  useEffect(() => {
+    setPageState(1);
+    setDataState(null);
+    debouncedHandleChange();
   }, [
     searchTableName.slug,
     filter.searchComponents.type,
@@ -106,20 +158,28 @@ export function SearchComponents<T extends ISearchComponents>({
     searchInput,
     minPriceState,
     maxPriceState,
+    coolerState,
+    caseFansState,
+    liquidCoolingState,
+    hddState,
+    ssdState,
   ]);
-
+  useEffect(() => {
+    debouncedHandleChange();
+  }, [pageState]);
   useEffect(() => {
     setSearchInput("");
   }, [filtersStore[searchTableName.slug]]);
+
   return (
     <div className="flex flex-col max-h-full h-full max-w-full lg:w-full justify-center">
       <SearchComponentsHeader
         onClose={onClose}
         headerName={searchTableName}
         setExpandFilter={setExpandFilter}
-        countOfComponents={countOfComponents}
+        countOfComponents={dataState?.count || 0}
       />
-
+      <button onClick={() => setPageState((prev) => prev + 1)}>+</button>
       <div className="flex justify-between items-center gap-[40px] max-lg:gap-[10px] h-full  pt-[23px] max-h-[calc(100%-18px-23px-16px-10px)]">
         <SearchComponentsFiltersLeftPart
           expandFilter={expandFilter}
@@ -134,9 +194,22 @@ export function SearchComponents<T extends ISearchComponents>({
             maxPriceState,
             setMaxPriceState,
           }}
+          additionalFiltersState={{
+            coolerState,
+            caseFansState,
+            liquidCoolingState,
+            hddState,
+            ssdState,
+            setCoolerState,
+            setCaseFansState,
+            setLiquidCoolingState,
+            setHddState,
+            setSsdState,
+          }}
         />
         <MainSearchComponentsComponent
-          fetchStates={{ isLoading, isError, data }}
+          fetchStates={{ isLoading, isError, dataState }}
+          setPageState={setPageState}
         />
       </div>
     </div>

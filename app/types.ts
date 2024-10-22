@@ -87,7 +87,7 @@ export interface IComponentsResults {
 }
 export interface IComponentsGlobal {
   count: number;
-  countByValyue: {};
+  countByValue: {};
   maxPrice: number;
   minPrice: number;
   next: string | null;

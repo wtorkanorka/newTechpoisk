@@ -1,5 +1,5 @@
 "use client";
-import React, { memo, useState } from "react";
+import React, { Dispatch, memo, SetStateAction, useState } from "react";
 import { SearchComponentsInput } from "./SearchComponentsInput";
 import { FilterPanel } from "../../filterPanel/FilterPanel";
 import {
@@ -13,14 +13,26 @@ interface ISearchComponentsFiltersLeftPart {
   expandFilter: boolean;
   setExpandFilter: (value: boolean) => void;
   compatibleState: boolean;
-  setCompatibleState: any;
+  setCompatibleState: Dispatch<SetStateAction<boolean>>;
   searchInput: string;
-  setSearchInput: any;
+  setSearchInput: Dispatch<SetStateAction<string>>;
   priceState: {
     minPriceState: number;
-    setMinPriceState: any;
+    setMinPriceState: Dispatch<SetStateAction<number>>;
     maxPriceState: number;
-    setMaxPriceState: any;
+    setMaxPriceState: Dispatch<SetStateAction<number>>;
+  };
+  additionalFiltersState: {
+    coolerState: boolean;
+    caseFansState: boolean;
+    liquidCoolingState: boolean;
+    hddState: boolean;
+    ssdState: boolean;
+    setCoolerState: Dispatch<SetStateAction<boolean>>;
+    setCaseFansState: Dispatch<SetStateAction<boolean>>;
+    setLiquidCoolingState: Dispatch<SetStateAction<boolean>>;
+    setHddState: Dispatch<SetStateAction<boolean>>;
+    setSsdState: Dispatch<SetStateAction<boolean>>;
   };
 }
 
@@ -33,6 +45,7 @@ export const SearchComponentsFiltersLeftPart = memo(
     searchInput,
     setSearchInput,
     priceState,
+    additionalFiltersState,
   }: ISearchComponentsFiltersLeftPart) => {
     const { isMobileWindow } = useIsMobileWindow();
     const { searchTableName } = useSearchTableName();
@@ -96,9 +109,9 @@ export const SearchComponentsFiltersLeftPart = memo(
                 type="checkbox"
                 name=""
                 id=""
-                checked={filtersState["hdd"]}
+                checked={additionalFiltersState.hddState}
                 onChange={() => {
-                  toggleFilter("hdd");
+                  additionalFiltersState.setHddState((prev) => !prev);
                 }}
               />{" "}
               <p className="text-[20px] font-[300]">Жёсткий диск</p>
@@ -108,11 +121,11 @@ export const SearchComponentsFiltersLeftPart = memo(
                 type="checkbox"
                 name=""
                 id=""
-                checked={filtersState["ssd"]}
+                checked={additionalFiltersState.ssdState}
                 onChange={() => {
-                  toggleFilter("ssd");
+                  additionalFiltersState.setSsdState((prev) => !prev);
                 }}
-              />{" "}
+              />
               <p className="text-[20px] font-[300]">SSD накопитель</p>
             </label>
           </>
@@ -124,9 +137,9 @@ export const SearchComponentsFiltersLeftPart = memo(
                 type="checkbox"
                 name=""
                 id=""
-                checked={filtersState.cooler}
+                checked={additionalFiltersState.coolerState}
                 onChange={() => {
-                  toggleFilter("cooler");
+                  additionalFiltersState.setCoolerState((prev) => !prev);
                 }}
               />{" "}
               <p className="text-[20px] font-[300]">Кулеры для процессора</p>
@@ -136,9 +149,9 @@ export const SearchComponentsFiltersLeftPart = memo(
                 type="checkbox"
                 name=""
                 id=""
-                checked={filtersState.liquid_cooling}
+                checked={additionalFiltersState.liquidCoolingState}
                 onChange={() => {
-                  toggleFilter("liquid_cooling");
+                  additionalFiltersState.setLiquidCoolingState((prev) => !prev);
                 }}
               />{" "}
               <p className="text-[20px] font-[300]">
@@ -150,9 +163,9 @@ export const SearchComponentsFiltersLeftPart = memo(
                 type="checkbox"
                 name=""
                 id=""
-                checked={filtersState.case_fans}
+                checked={additionalFiltersState.caseFansState}
                 onChange={() => {
-                  toggleFilter("case_fans");
+                  additionalFiltersState.setCaseFansState((prev) => !prev);
                 }}
               />{" "}
               <p className="text-[20px] font-[300]">Кулеры для корпуса</p>

@@ -23,7 +23,7 @@ export const SelectFilterComponent = ({
           event.stopPropagation();
           setIsExpand((prev) => !prev);
         }}
-        className="flex max-w-full gap-[6px] items-center  border-b border-b-[#DDE1E7] pb-[14px] select-none"
+        className="flex max-w-full gap-[6px] items-center select-none"
       >
         <p className="text-[20px] font-[400]">{filter[componentName]?.name}</p>
         <Image
@@ -51,7 +51,7 @@ export const SelectFilterComponent = ({
                 });
                 setIsExpand(false);
               }}
-              className="w-full hover:opacity-50 text-left"
+              className="w-full hover:opacity-50 text-left whitespace-nowrap"
             >
               {e.name}
             </button>

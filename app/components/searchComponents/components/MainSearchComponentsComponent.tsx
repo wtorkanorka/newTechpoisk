@@ -1,4 +1,4 @@
-import React, { memo } from "react";
+import React, { Dispatch, memo, SetStateAction } from "react";
 import { SearchComponentsInput } from "./SearchComponentsInput";
 import { SearchComponentActiveFilters } from "../../searchComponentActiveFilters/SearchComponentActiveFilters";
 import Image from "next/image";
@@ -16,12 +16,13 @@ interface IMainSearchComponentsComponent {
   fetchStates: {
     isLoading: boolean;
     isError: boolean;
-    data: IComponentsGlobal | null;
+    dataState: IComponentsGlobal | null;
   };
+  setPageState: Dispatch<SetStateAction<number>>;
 }
 
 export const MainSearchComponentsComponent = memo(
-  ({ fetchStates }: IMainSearchComponentsComponent) => {
+  ({ fetchStates, setPageState }: IMainSearchComponentsComponent) => {
     const { searchTableName } = useSearchTableName();
     const { filter, setFilter } = useFiltersName("searchComponents");
 
@@ -39,12 +40,17 @@ export const MainSearchComponentsComponent = memo(
       <div className="flex flex-col gap-[7px] self-baseline max-lg:max-w-[1000px] overflow-x-auto h-full lg:w-full">
         <SearchComponentActiveFilters />
 
-        <SelectFilterComponent
-          filters={filtersArr}
-          componentName={"searchComponents"}
-        />
+        <div className="border-b border-b-[#DDE1E7] pb-[14px] ">
+          <SelectFilterComponent
+            filters={filtersArr}
+            componentName={"searchComponents"}
+          />
+        </div>
 
-        <ProductContainer fetchStates={fetchStates} />
+        <ProductContainer
+          fetchStates={fetchStates}
+          setPageState={setPageState}
+        />
       </div>
     );
   }

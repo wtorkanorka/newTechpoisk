@@ -17,7 +17,12 @@ import { nanoid } from "@reduxjs/toolkit";
 export const ProductRowComponent = memo(
   ({ data }: { data: IComponentsResults }) => {
     const { isMobileWindow } = useIsMobileWindow();
-    const { addComponentToWishlist, wishlistStore } = useWishlistStore();
+    const {
+      addComponentToWishlist,
+      wishlistStore,
+      componentIsInWishlist,
+      deleteFromWishlist,
+    } = useWishlistStore();
     const [isShowPrices, setIsShowPrices] = useState(false);
     function findMinAndMaxPrice(array: IOffers[]): string {
       //Возвращает строку такого типа 10 000 - 10 490 ₽
@@ -38,12 +43,12 @@ export const ProductRowComponent = memo(
         ].toLocaleString()} ₽`;
       }
     }
-
+    const isActive = componentIsInWishlist({ id: data.id });
     return (
       <>
         <div className="flex justify-between max-w-full gap-[30px] max-lg:gap-[20px] items-center py-[18px] max-xl:flex-wrap p-2 border-b border-[#DDE1E7]">
           <Link
-            href={"/"}
+            href={`/ProductCard/${data.id}`}
             className="flex items-center gap-[65px] max-lg:gap-[10px]"
           >
             <Image
@@ -99,6 +104,8 @@ export const ProductRowComponent = memo(
             </div>
             <div className="flex items-center gap-[20px] min-w-[80px] max-lg:gap-[10px]">
               <ProductManagerButton
+                isActive={isActive}
+                title="Добавить в избранное"
                 isWishListButton={true}
                 iconSize={30}
                 onClickFunc={() => {
@@ -112,7 +119,11 @@ export const ProductRowComponent = memo(
                     isAssembly: false,
                     id: nanoid(),
                   };
-                  addComponentToWishlist(dataForWishlist);
+                  if (isActive) {
+                    deleteFromWishlist({ id: data.id });
+                  } else {
+                    addComponentToWishlist(dataForWishlist);
+                  }
                 }}
               />
               {/* <ProductManagerButton isComparisonButton={true} iconSize={30} /> */}

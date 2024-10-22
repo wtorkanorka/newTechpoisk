@@ -17,6 +17,8 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  //TODO: Сделать окно с выводом компонентов в сборке, по клику на купить сборку, то же самое в избранном
+  //TODO: Начать делать каталог
   return (
     <html lang="en">
       <ReduxProvider>

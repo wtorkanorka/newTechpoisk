@@ -10,7 +10,7 @@ export const NavBar = memo(() => {
   return (
     <>
       {isMobileWindow && (
-        <div className="grid grid-cols-3 fixed bottom-0 w-full bg-white border-t border-[#dde1e7] py-[7px] px-[23px]">
+        <div className="grid grid-cols-3 fixed bottom-0 w-full bg-white border-t border-[#dde1e7] py-[7px] px-[23px] z-[100]">
           <NavBarButton
             title="Каталог"
             icon={"catalog"}
