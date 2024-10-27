@@ -20,7 +20,7 @@ export const NavBar = memo(() => {
           <NavBarButton
             title="Избранное"
             icon={"wishlist"}
-            page={"/wishlist"}
+            page={"/Wishlist"}
           />
           {/* <NavBarButton
             title="Сравнение"

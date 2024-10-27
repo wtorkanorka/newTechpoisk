@@ -161,9 +161,10 @@ export function HeaderSecondLayer() {
             </button>
             {hintsArr !== null && hintsArr.length !== 0 && inputIsInFocus && (
               <div className="w-full bg-[white] absolute top-[60px] left-0 flex flex-col gap-[10px] p-[10px] rounded-[30px] shadow-xl z-[5]">
-                {hintsArr.map((hint) => {
+                {hintsArr.map((hint, index) => {
                   return (
                     <Link
+                      key={index}
                       href={`/Catalog/?componentType=${hint.component_type__slug}&search=${hint.name}`}
                       className="text-left hover:bg-[#e0e0e0]"
                     >
