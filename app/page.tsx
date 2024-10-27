@@ -88,9 +88,8 @@ export default function Home() {
     setIsModalOpen(false);
   };
 
-  async function checkCompatibleIds() {
+  async function checkCompatibleIds(ids: string) {
     try {
-      const ids = getAllIds().join(",");
       const response = await axios.get(
         `https://techpoisk.com:8443/checkCompatibility/?ids=${ids}`
       );
@@ -116,7 +115,10 @@ export default function Home() {
   }
   useEffect(() => {
     getCountOfComponentsInConfigurator();
-    checkCompatibleIds();
+    const ids = getAllIds().join(",");
+    if (Boolean(ids)) {
+      checkCompatibleIds(ids);
+    }
   }, [componentsStore]);
 
   const isIncompatible = (components: IComponentsResults[]) =>
@@ -172,6 +174,18 @@ export default function Home() {
         </button>
       </div>
       <div className="flex gap-[10px] items-start justify-between max-lg:flex-col">
+        {!renderItems && (
+          <div className="flex flex-col gap-[10px] w-full">
+            <div className="border-[1px] rounded-[20px] border-[#dde1e7] py-[31px] px-[35px] w-full min-h-[94px]" />
+            <div className="border-[1px] rounded-[20px] border-[#dde1e7] py-[31px] px-[35px] w-full min-h-[94px]" />
+            <div className="border-[1px] rounded-[20px] border-[#dde1e7] py-[31px] px-[35px] w-full min-h-[94px]" />
+            <div className="border-[1px] rounded-[20px] border-[#dde1e7] py-[31px] px-[35px] w-full min-h-[94px]" />
+            <div className="border-[1px] rounded-[20px] border-[#dde1e7] py-[31px] px-[35px] w-full min-h-[94px]" />
+            <div className="border-[1px] rounded-[20px] border-[#dde1e7] py-[31px] px-[35px] w-full min-h-[94px]" />
+            <div className="border-[1px] rounded-[20px] border-[#dde1e7] py-[31px] px-[35px] w-full min-h-[94px]" />
+            <div className="border-[1px] rounded-[20px] border-[#dde1e7] py-[31px] px-[35px] w-full min-h-[94px]" />
+          </div>
+        )}
         {renderItems && (
           <ul className="flex flex-col gap-[10px] w-full">
             <div

@@ -35,7 +35,7 @@ const ModalPortal = ({
 
   return createPortal(
     <div
-      className={`fixed inset-0 backdrop-filter backdrop-blur-md ${
+      className={`fixed inset-0 backdrop-filter backdrop-blur-md z-[1] ${
         isInCenter && "flex justify-center items-center"
       } ${classes}`}
       onClick={(event) => {

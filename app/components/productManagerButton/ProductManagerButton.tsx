@@ -59,7 +59,7 @@ export const ProductManagerButton = memo(
           viewBox="0 0 17 17"
           fill="none"
           xmlns="http://www.w3.org/2000/svg"
-          className="min-w-[17px]"
+          className={`min-w-[17px]`}
         >
           <path
             d="M8.16035 10.7094C6.75275 10.7094 5.61035 9.56698 5.61035 8.15938C5.61035 6.75178 6.75275 5.60938 8.16035 5.60938C9.56795 5.60938 10.7104 6.75178 10.7104 8.15938C10.7104 9.56698 9.56795 10.7094 8.16035 10.7094ZM8.16035 6.62938C7.31715 6.62938 6.63035 7.31618 6.63035 8.15938C6.63035 9.00258 7.31715 9.68938 8.16035 9.68938C9.00355 9.68938 9.69035 9.00258 9.69035 8.15938C9.69035 7.31618 9.00355 6.62938 8.16035 6.62938Z"
@@ -94,18 +94,7 @@ export const ProductManagerButton = memo(
         className={`p-[7px] flex items-center justify-center gap-[8px] whitespace-nowrap `}
         onClick={(e) => {
           e.stopPropagation();
-          // if (isWishListButton) {
-          //   alert("Добавлено в избранное");
-          //   return;
-          // }
-          // if (isComparisonButton) {
-          //   alert("Добавлено в сравнение");
-          //   return;
-          // }
-          // if (isConfigurationButton) {
-          //   alert("Конфигурация");
-          //   return;
-          // }
+
           onClickFunc();
         }}
       >
@@ -113,7 +102,7 @@ export const ProductManagerButton = memo(
           className={`max-h-[${iconSize}px] max-w-[${iconSize}px] inset-0 ${
             wichButtonIs == "configurator" &&
             `${isHovered ? "border-[#FF525280]" : "border-[#ff5252]"} ${
-              isActive && "bg-[#ff5252]"
+              isActive && "bg-[#ff5252] "
             } rounded-[43px] p-[7px] border-[1px]`
           }`}
         >

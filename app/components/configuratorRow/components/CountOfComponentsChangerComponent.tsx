@@ -24,7 +24,7 @@ export const CountOfComponentsChangerComponent = memo(
             e.stopPropagation();
             setIsExpand((prev) => !prev);
           }}
-          className="py-[3px] px-[7px] border-[black] rounded-[10px] border-[1px] flex items-center gap-[6px]"
+          className="py-[3px] px-[7px] border-[black] rounded-[10px] border-[1px] flex items-center gap-[6px] z-0"
         >
           {currentState}
           <Image
@@ -39,8 +39,8 @@ export const CountOfComponentsChangerComponent = memo(
           className={`${
             isExpand
               ? "translate-x-0 opacity-100 transition-all"
-              : "overflow-hidden opacity-0 pointer-events-none transition-all translate-x-[100px]"
-          } absolute  bg-[white] shadow-xl`}
+              : "overflow-hidden opacity-0 pointer-events-none transition-all translate-x-[-100px]"
+          } absolute  bg-[white] shadow-xl z-[1]`}
         >
           <li className="flex items-center justify-center hover:bg-[#ddd] rounded-t-[4px]">
             <button

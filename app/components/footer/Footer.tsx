@@ -8,6 +8,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 export function Footer() {
   const pathname = usePathname();
+
   return (
     <div className="bg-[#262626] py-[24px] px-[15px] mt-[76px] max-lg:mt-[53px] max-lg:mb-[61px]">
       <div className="max-w-[1300px] mx-auto">
@@ -16,47 +17,89 @@ export function Footer() {
             <ul className="flex flex-col gap-[30px] items-start max-lg:gap-[20px]">
               <li
                 className={`text-[18px] text-[white] font-[400] font-sans-regular hover:opacity-50 max-lg:text-[12px] ${
-                  pathname === "/about" && "text-[#0260e8]"
+                  pathname === "/about" ? "text-[#0260e8]" : ""
                 }`}
               >
-                <Link href="/about">О компании</Link>
+                <Link
+                  href="/about"
+                  className={`${pathname === "/about" ? "text-[#0260e8]" : ""}`}
+                >
+                  О компании
+                </Link>
               </li>
               <li
                 className={`text-[18px] text-[white] font-[400] font-sans-regular hover:opacity-50 max-lg:text-[12px] ${
-                  pathname === "/contacts" && "text-[#0260e8]"
+                  pathname === "/contacts" ? "text-[#0260e8]" : ""
                 }`}
               >
-                <Link href="/contacts"> Контакты</Link>
+                <Link
+                  href="/contacts"
+                  className={`${
+                    pathname === "/contacts" ? "text-[#0260e8]" : ""
+                  }`}
+                >
+                  {" "}
+                  Контакты
+                </Link>
               </li>
               <li
                 className={`text-[18px] text-[white] font-[400] font-sans-regular hover:opacity-50 max-lg:text-[12px] ${
-                  pathname === "/partners" && "text-[#0260e8]"
+                  pathname === "/partners" ? "text-[#0260e8]" : ""
                 }`}
               >
-                <Link href="/partners">Партнёрам</Link>
+                <Link
+                  href="/partners"
+                  className={`${
+                    pathname === "/partners" ? "text-[#0260e8]" : ""
+                  }`}
+                >
+                  Партнёрам
+                </Link>
               </li>
             </ul>
             <ul className="flex flex-col gap-[30px] items-start max-lg:gap-[20px]">
               <li
                 className={`text-[18px] text-[white] font-[400] font-sans-regular hover:opacity-50 max-lg:text-[12px] ${
-                  pathname === "/identity" && "text-[#0260e8]"
+                  pathname === "/identity" ? "text-[#0260e8]" : ""
                 }`}
               >
-                <Link href="/identity"> Политика конфиденциальности</Link>
+                <Link
+                  href="/identity"
+                  className={`${
+                    pathname === "/identity" ? "text-[#0260e8]" : ""
+                  }`}
+                >
+                  {" "}
+                  Политика конфиденциальности
+                </Link>
               </li>
               <li
                 className={`text-[18px] text-[white] font-[400] font-sans-regular hover:opacity-50 max-lg:text-[12px] ${
-                  pathname === "/52nogletchergang" && "text-[#0260e8]"
+                  pathname === "/52nogletchergang" ? "text-[#0260e8]" : ""
                 }`}
               >
-                <Link href="/52nogletchergang">Обратная связь</Link>
+                <Link
+                  href="/52nogletchergang"
+                  className={`${
+                    pathname === "/52nogletchergang" ? "text-[#0260e8]" : ""
+                  }`}
+                >
+                  Обратная связь
+                </Link>
               </li>
               <li
                 className={`text-[18px] text-[white] font-[400] font-sans-regular hover:opacity-50 max-lg:text-[12px] ${
-                  pathname === "/delivery" && "text-[#0260e8]"
+                  pathname === "/delivery" ? "text-[#0260e8]" : ""
                 }`}
               >
-                <Link href="/delivery">Оплата и доставка</Link>
+                <Link
+                  href="/delivery"
+                  className={`${
+                    pathname === "/delivery" ? "text-[#0260e8]" : ""
+                  }`}
+                >
+                  Оплата и доставка
+                </Link>
               </li>
             </ul>
           </div>

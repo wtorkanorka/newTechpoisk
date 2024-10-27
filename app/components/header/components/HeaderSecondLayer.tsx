@@ -1,6 +1,6 @@
 "use client";
 import Image from "next/image";
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import comparisonIconBlack from "@/app/assets/icons/comparison-icon-black.svg";
 import wishlistIconBlack from "@/app/assets/icons/wishlist-icon-black.svg";
 import catalogIconWhite from "@/app/assets/icons/catalog-icon-white.png";
@@ -8,17 +8,102 @@ import magnifierBlue from "@/app/assets/icons/magnifier-blue.svg";
 import ModalPortal from "../../modalPortal/ModalPortal";
 import { CatalogComponent } from "../../catalogComponent/CatalogComponent";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { redirect, usePathname } from "next/navigation";
+import axios from "axios";
+import { namesSearchTableName, useIsMobileWindow } from "@/app/hooks/hooks";
+import { useRouter } from "next/router";
 
 export function HeaderSecondLayer() {
-  const [inputFielText, setInputFieldText] = useState("");
+  const [inputFieldText, setInputFieldText] = useState("");
   const [showCatalog, setShowCatalog] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
+  const [inputIsInFocus, setInputIsInFocus] = useState(false);
+  const { isMobileWindow } = useIsMobileWindow();
+  const [hintsArr, setHintsArr] = useState<
+    { name: string; component_type__slug: string }[] | null
+  >(null);
+  const [componentTypeFromSearch, setComponentTypeFromSearch] = useState({
+    ru: "Процессор",
+    slug: "processor",
+  });
 
   function HandleSubmit() {
-    setInputFieldText(inputRef.current?.value || "");
+    window.location.href = `/Catalog/?componentType=${componentTypeFromSearch.slug}&search=${inputFieldText}`;
   }
   const pathname = usePathname();
+  const searchTableNameNames: {
+    [key: string]: {
+      ru: string;
+      slug: namesSearchTableName;
+    };
+  } = {
+    motherboard: { ru: "Материнская плата", slug: "motherboard" },
+    processor: { ru: "Процессор", slug: "processor" },
+    ram: { ru: "Оперативная память", slug: "ram" },
+    "hdd,ssd": { ru: "Хранение данных", slug: "hdd,ssd" },
+    hdd: { ru: "Хранение данных", slug: "hdd,ssd" },
+    ssd: { ru: "Хранение данных", slug: "hdd,ssd" },
+    gpu: { ru: "Видеокарта", slug: "gpu" },
+    power_supply: { ru: "Блок питания", slug: "power_supply" },
+    case: { ru: "Корпус", slug: "case" },
+    "cooler,liquid_cooling,case_fans": {
+      ru: "Охлаждение",
+      slug: "cooler,liquid_cooling,case_fans",
+    },
+    case_fans: {
+      ru: "Охлаждение",
+      slug: "cooler,liquid_cooling,case_fans",
+    },
+    liquid_cooling: {
+      ru: "Охлаждение",
+      slug: "cooler,liquid_cooling,case_fans",
+    },
+    cooler: {
+      ru: "Охлаждение",
+      slug: "cooler,liquid_cooling,case_fans",
+    },
+  };
+  async function getComponentTypeFromServer() {
+    try {
+      const res = axios.get(
+        `https://techpoisk.com:8443/searchHints/?search=${inputFieldText}&limit=5`
+      );
+      const data: {
+        component_type__slug: namesSearchTableName;
+        name: string;
+      }[] = (await res).data;
+      setHintsArr(data);
+      setComponentTypeFromSearch({
+        ru:
+          searchTableNameNames[data[0].component_type__slug].ru || "Процессор",
+        slug:
+          searchTableNameNames[data[0].component_type__slug].slug ||
+          "processor",
+      });
+    } catch (e) {
+      console.log(e);
+    }
+  }
+
+  useEffect(() => {
+    if (inputFieldText !== "") {
+      getComponentTypeFromServer();
+    }
+  }, [inputFieldText]);
+
+  useEffect(() => {
+    const handleClick = (event: MouseEvent) => {
+      if (event.target !== inputRef.current) {
+        setInputIsInFocus(false);
+      }
+    };
+
+    document.addEventListener("click", handleClick);
+
+    return () => {
+      document.removeEventListener("click", handleClick);
+    };
+  }, []);
   return (
     <>
       <div className="flex items-center justify-between relative">
@@ -43,28 +128,22 @@ export function HeaderSecondLayer() {
               e.preventDefault();
               HandleSubmit();
             }}
-            className="border border-[#0260e8] border-1 rounded-[37px] h-full max-lg:h-[32px] w-full flex items-center px-[25px] py-[14px] mr-[84px] max-lg:mx-auto max-lg:rounded-[16px] max-lg:px-[15px] max-lg:py-[8px]"
+            className="border relative border-[#0260e8] border-1 rounded-[37px] h-full max-lg:h-[32px] w-full flex items-center px-[25px] py-[14px] mr-[84px] max-lg:mx-auto max-lg:rounded-[16px] max-lg:px-[15px] max-lg:py-[8px]"
           >
             <input
               type="text"
-              className="w-full outline-none border-none mr-[25px] placeholder-[#9e9e9e] text-[17px] max-lg:mr-[15px] max-lg:hidden bg-[transparent]"
+              className={`w-full outline-none border-none mr-[25px] placeholder-[#9e9e9e] ${
+                isMobileWindow ? "text-[11px]" : "text-[17px]"
+              } max-lg:mr-[15px] bg-[transparent]`}
               ref={inputRef}
-              value={inputFielText}
+              value={inputFieldText}
               onChange={(e) => {
                 setInputFieldText(e.target.value);
               }}
-              placeholder="Поиск по сайту"
+              placeholder={isMobileWindow ? "Поиск" : "Поиск по сайту"}
+              onClick={() => setInputIsInFocus(true)}
             />
-            <input
-              type="text"
-              className="w-full outline-none border-none mr-[25px] placeholder-[#9e9e9e] text-[11px] max-lg:mr-[15px] lg:hidden bg-[transparent]"
-              ref={inputRef}
-              value={inputFielText}
-              onChange={(e) => {
-                setInputFieldText(e.target.value);
-              }}
-              placeholder="Поиск"
-            />
+
             <button
               type="submit"
               onSubmit={(e) => {
@@ -80,6 +159,20 @@ export function HeaderSecondLayer() {
                 className="max-lg:w-[15px] max-lg:h-[15px]"
               />
             </button>
+            {hintsArr !== null && hintsArr.length !== 0 && inputIsInFocus && (
+              <div className="w-full bg-[white] absolute top-[60px] left-0 flex flex-col gap-[10px] p-[10px] rounded-[30px] shadow-xl z-[5]">
+                {hintsArr.map((hint) => {
+                  return (
+                    <Link
+                      href={`/Catalog/?componentType=${hint.component_type__slug}&search=${hint.name}`}
+                      className="text-left hover:bg-[#e0e0e0]"
+                    >
+                      {hint.name}
+                    </Link>
+                  );
+                })}
+              </div>
+            )}
           </form>
         </div>
         <div className="flex gap-[32px] items-center max-lg:hidden">
@@ -125,9 +218,10 @@ export function HeaderSecondLayer() {
           setShowCatalog((prev) => !prev);
         }}
         isOpen={showCatalog}
-        innerClasses="self-start mx-[15px] h-[60vh] mt-[158px] max-lg:h-[80vh] max-lg:self-center max-lg:mt-[0] lg:!h-auto"
+        classes="z-[10]"
+        innerClasses="self-start mx-[15px] h-[60vh] mt-[158px] max-lg:h-[80vh] max-lg:self-center max-lg:mt-[0] lg:!h-auto max-w-[1212px]"
       >
-        <CatalogComponent />
+        <CatalogComponent setShowCatalog={setShowCatalog} />
       </ModalPortal>
     </>
   );

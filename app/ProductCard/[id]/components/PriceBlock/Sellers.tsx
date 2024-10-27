@@ -99,6 +99,7 @@ export const Sellers = ({ data, offerElement }: Sellers) => {
               viewBox="0 0 16 12"
               fill="none"
               xmlns="http://www.w3.org/2000/svg"
+              className="rotate-[360deg] transition-all"
             >
               <path
                 d="M5.50013 9.47499L2.02513 5.99999L0.841797 7.17499L5.50013 11.8333L15.5001 1.83333L14.3251 0.658325L5.50013 9.47499Z"
@@ -107,7 +108,7 @@ export const Sellers = ({ data, offerElement }: Sellers) => {
             </svg>
           ) : (
             <svg
-              className={styles.setting}
+              className={styles.setting + "rotate-[360deg] transition-all"}
               width="16"
               height="16"
               viewBox="0 0 24 24"

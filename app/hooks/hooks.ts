@@ -30,6 +30,7 @@ import {
   editNameOfAssemblyWishlist,
   IWishList,
 } from "../redux/services/wishlistSlice";
+import { usePathname, useSearchParams } from "next/navigation";
 
 export type namesSearchTableName =
   | "motherboard"
@@ -40,8 +41,63 @@ export type namesSearchTableName =
   | "power_supply"
   | "case"
   | "cooler,liquid_cooling,case_fans";
+
+const searchTableNameNames: {
+  [key: string]: {
+    ru: string;
+    slug: namesSearchTableName;
+  };
+} = {
+  motherboard: { ru: "Материнская плата", slug: "motherboard" },
+  processor: { ru: "Процессор", slug: "processor" },
+  ram: { ru: "Оперативная память", slug: "ram" },
+  "hdd,ssd": { ru: "Хранение данных", slug: "hdd,ssd" },
+  hdd: { ru: "Хранение данных", slug: "hdd,ssd" },
+  ssd: { ru: "Хранение данных", slug: "hdd,ssd" },
+  gpu: { ru: "Видеокарта", slug: "gpu" },
+  power_supply: { ru: "Блок питания", slug: "power_supply" },
+  case: { ru: "Корпус", slug: "case" },
+  "cooler,liquid_cooling,case_fans": {
+    ru: "Охлаждение",
+    slug: "cooler,liquid_cooling,case_fans",
+  },
+  case_fans: {
+    ru: "Охлаждение",
+    slug: "cooler,liquid_cooling,case_fans",
+  },
+  liquid_cooling: {
+    ru: "Охлаждение",
+    slug: "cooler,liquid_cooling,case_fans",
+  },
+  cooler: {
+    ru: "Охлаждение",
+    slug: "cooler,liquid_cooling,case_fans",
+  },
+};
+
 export const useSearchTableName = () => {
-  const searchTableName = useAppSelector(
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
+  const [searchTableNameFromParams, setSearchTableNameFromParams] = useState<{
+    ru: string;
+    slug: namesSearchTableName;
+  }>({
+    ru: "Процессор",
+    slug: "processor",
+  });
+  const params = Object.fromEntries(searchParams.entries());
+  // useEffect(() => {
+
+  //   const params = Object.fromEntries(searchParams.entries());
+  //   setSearchTableNameFromParams(
+  //     searchTableNameNames[params.componentType] || {
+  //       ru: "Процессор",
+  //       slug: "processor",
+  //     }
+  //   );
+  // }, [searchParams]);
+
+  const searchTableNameState = useAppSelector(
     (state: RootState) => state.searchTableNameReducer.searchTableName
   ) || { ru: "Процессор", slug: "processor" };
   const dispatch = useAppDispatch();
@@ -52,7 +108,10 @@ export const useSearchTableName = () => {
   }) => {
     dispatch(setNewSearchTableName({ searchTableName: newSearchTableName }));
   };
-
+  const searchTableName =
+    pathname == "/" || pathname == "/Wishlist"
+      ? searchTableNameState
+      : searchTableNameNames[params.componentType];
   return { searchTableName, setSearchTableName };
 };
 export const useFiltersName = (componentName: string) => {
@@ -217,8 +276,15 @@ export const useFetchFilters = ({
       setIsLoading(false);
     }
   };
+  const searchParams = useSearchParams();
+  const params = Object.fromEntries(searchParams.entries());
+  const pathname = usePathname();
   useEffect(() => {
-    fetchFilters();
+    if (pathname !== "/") {
+      fetchFilters();
+    } else {
+      fetchFilters();
+    }
   }, [searchTableName.slug]);
   const refetch = async () => {
     fetchFilters();

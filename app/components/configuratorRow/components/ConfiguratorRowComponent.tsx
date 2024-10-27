@@ -28,7 +28,7 @@ export const ConfiguratorRowComponent = memo(
       <div className="py-[9px] grid grid-cols-[2fr_0.5fr_0.5fr]">
         <Link
           href={`/ProductCard/${component.id}`}
-          className="flex items-start gap-[28px] max-lg:items-center max-lg:gap-[13px]"
+          className="flex items-start gap-[28px] max-lg:items-center max-lg:gap-[13px] max-sm:flex-wrap"
           onClick={(e) => {
             e.stopPropagation();
           }}

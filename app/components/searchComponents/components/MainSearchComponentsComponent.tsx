@@ -37,7 +37,7 @@ export const MainSearchComponentsComponent = memo(
       },
     ];
     return (
-      <div className="flex flex-col gap-[7px] self-baseline max-lg:max-w-[1000px] overflow-x-auto h-full lg:w-full">
+      <div className="flex flex-col gap-[7px] self-baseline max-lg:max-w-[1000px] overflow-x-auto h-full w-full">
         <SearchComponentActiveFilters />
 
         <div className="border-b border-b-[#DDE1E7] pb-[14px] ">

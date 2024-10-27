@@ -20,6 +20,7 @@ import { IComponentsGlobal } from "@/app/types";
 import axios from "axios";
 import { usePathname } from "next/navigation";
 import { groupBy } from "lodash";
+import { useSearchParams } from "next/navigation";
 
 interface ISearchComponents {
   onClose?: () => void;
@@ -48,6 +49,8 @@ export function SearchComponents<T extends ISearchComponents>({
   const { filtersStore } = useFiltersStore();
   const { filter } = useFiltersName("searchComponents");
   const { getAllIds } = useComponentsStore();
+  const searchParams = useSearchParams();
+  const params = Object.fromEntries(searchParams.entries());
 
   function getLinkFromFilters() {
     const groupFiltersObject = groupBy(
@@ -67,8 +70,10 @@ export function SearchComponents<T extends ISearchComponents>({
 
   async function getProductData() {
     const allIdsArr = getAllIds();
+    const componentTypeFrom =
+      pathname == "/" ? searchTableName.slug : params.componentType;
     const changedComponentType =
-      searchTableName.slug == "cooler,liquid_cooling,case_fans"
+      componentTypeFrom == "cooler,liquid_cooling,case_fans"
         ? `${
             coolerState && caseFansState && liquidCoolingState
               ? "cooler,liquid_cooling,case_fans"
@@ -95,11 +100,16 @@ export function SearchComponents<T extends ISearchComponents>({
           ? "ssd"
           : "hdd,ssd"
         : searchTableName.slug;
-    const componentType =
-      pathname === "/"
-        ? `&componentType=${changedComponentType}`
-        : "&componentType=processor"; //TODO: Если на странице конфигуратора то из стейта, если на странице поиска, то из ссылки
-    const searchInputValue = searchInput !== "" ? `&search=${searchInput}` : "";
+    const componentType = `&componentType=${changedComponentType}`;
+
+    const searchInputValue =
+      pathname == "/"
+        ? searchInput !== ""
+          ? `&search=${searchInput}`
+          : ""
+        : params.search
+        ? `&search=${params.search}`
+        : "";
     const ordering = `&ordering=${filter.searchComponents.type}`;
     const minPrice = `&minPrice=${minPriceState * 100}`;
     const maxPrice = `&maxPrice=${maxPriceState * 100}`;
@@ -170,7 +180,13 @@ export function SearchComponents<T extends ISearchComponents>({
   useEffect(() => {
     setSearchInput("");
   }, [filtersStore[searchTableName.slug]]);
-
+  useEffect(() => {
+    if (isError) {
+      setPageState(1);
+      setDataState(null);
+      debouncedHandleChange();
+    }
+  }, [isError]);
   return (
     <div className="flex flex-col max-h-full h-full max-w-full lg:w-full justify-center">
       <SearchComponentsHeader
@@ -179,8 +195,8 @@ export function SearchComponents<T extends ISearchComponents>({
         setExpandFilter={setExpandFilter}
         countOfComponents={dataState?.count || 0}
       />
-      <button onClick={() => setPageState((prev) => prev + 1)}>+</button>
-      <div className="flex justify-between items-center gap-[40px] max-lg:gap-[10px] h-full  pt-[23px] max-h-[calc(100%-18px-23px-16px-10px)]">
+
+      <div className="flex justify-between items-start gap-[40px] max-lg:gap-[10px] h-full  pt-[23px] max-h-[calc(100%-18px-23px-16px-10px)]">
         <SearchComponentsFiltersLeftPart
           expandFilter={expandFilter}
           setExpandFilter={setExpandFilter}

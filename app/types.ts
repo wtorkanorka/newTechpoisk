@@ -113,3 +113,8 @@ export interface IComponentsResultsInStore {
 // ^
 // |
 //Типы для компонентов
+
+export interface IHints {
+  component_type__slug: string;
+  name: string;
+}
