@@ -51,7 +51,7 @@ export function SearchComponents<T extends ISearchComponents>({
   const { getAllIds } = useComponentsStore();
   const searchParams = useSearchParams();
   const params = Object.fromEntries(searchParams.entries());
-
+  console.log(params);
   function getLinkFromFilters() {
     const groupFiltersObject = groupBy(
       filtersStore[searchTableName.slug],
@@ -102,14 +102,20 @@ export function SearchComponents<T extends ISearchComponents>({
         : searchTableName.slug;
     const componentType = `&componentType=${changedComponentType}`;
 
-    const searchInputValue =
-      pathname == "/"
-        ? searchInput !== ""
-          ? `&search=${searchInput}`
-          : ""
-        : params.search
-        ? `&search=${params.search}`
-        : "";
+    const searchInputValue = //Страница конфигуратора      | Страница поиска
+      pathname == "/" // searchInput -> searchInput   params.search -> если инпут пуст то из params запрос
+        ? searchInput !== "" //
+          ? `&search=${searchInput}` //
+          : "" //
+        : params.search //
+        ? searchInput === "" //
+          ? `&search=${params.search}`
+          : `&search=${searchInput}`
+        : searchInput === ""
+        ? ``
+        : `&search=${searchInput}`;
+    const additionalParamsForSearch =
+      pathname == "/" ? "" : `&${params.otherParams || ""}`;
     const ordering = `&ordering=${filter.searchComponents.type}`;
     const minPrice = `&minPrice=${minPriceState * 100}`;
     const maxPrice = `&maxPrice=${maxPriceState * 100}`;
@@ -126,7 +132,7 @@ export function SearchComponents<T extends ISearchComponents>({
       setIsError(false);
 
       const response = await axios.get(
-        `https://techpoisk.com:8443/components?page=${page}&pageSize=5${componentType}${searchInputValue}${ordering}${minPrice}${maxPrice}${compatibleWith}${hideIncompatible}${linkFromFilters}${hideNonShortProps}`
+        `https://techpoisk.com:8443/components?page=${page}&pageSize=5${componentType}${searchInputValue}${ordering}${minPrice}${maxPrice}${compatibleWith}${hideIncompatible}${linkFromFilters}${hideNonShortProps}${additionalParamsForSearch}`
       );
       const data: IComponentsGlobal = response.data;
       if (dataState !== null && page !== 1) {

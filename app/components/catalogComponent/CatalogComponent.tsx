@@ -39,24 +39,41 @@ export const CatalogComponent = memo(
             title: "",
             columnParams: "",
             components: [
-              { name: "Intel Core i3", params: "" },
-              { name: "Intel Core i5", params: "" },
-              { name: "Intel Core i7", params: "" },
-              { name: "Intel Core i9", params: "" },
-              { name: "Intel Pentium", params: "" },
-              { name: "Intel Xeon", params: "" },
+              { name: "Intel Core i3", params: "&otherParams=series=Core i3" },
+              { name: "Intel Core i5", params: "&otherParams=series=Core i5" },
+              { name: "Intel Core i7", params: "&otherParams=series=Core i7" },
+              { name: "Intel Core i9", params: "&otherParams=series=Core i9" },
+              {
+                name: "Intel Pentium",
+                params: "&series=Pentium Dual-Core,Pentium Gold",
+              },
+              // { name: "Intel Xeon", params: "" }, //TODO спросить даню что для зеона писать
             ],
           },
           secondColumn: {
             title: "",
             columnParams: "",
             components: [
-              { name: "AMD Ryzen 3", params: "" },
-              { name: "AMD Ryzen 5", params: "" },
-              { name: "AMD Ryzen 7", params: "" },
-              { name: "AMD Ryzen 9", params: "" },
-              { name: "AMD Athlon", params: "" },
-              { name: "AMD Threadripper", params: "" },
+              { name: "AMD Ryzen 3", params: "&series=Ryzen 3, Ryzen 3 PRO" },
+              {
+                name: "AMD Ryzen 5",
+                params: "&otherParams=series=AMD Ryzen 5, Ryzen 5 PRO",
+              },
+              {
+                name: "AMD Ryzen 7",
+                params: "&otherParams=series=AMD Ryzen 7, Ryzen 7 PRO",
+              },
+              { name: "AMD Ryzen 9", params: "&series=AMD Ryzen 9" },
+              {
+                name: "AMD Athlon",
+                params:
+                  "&otherParams=series=Athlon, Athlon X4, Athlon X2, Athlon PRO",
+              },
+              {
+                name: "AMD Threadripper",
+                params:
+                  "&otherParams=series=Ryzen Threadripper, Ryzen Threadripper PRO",
+              },
             ],
           },
         },
@@ -69,26 +86,26 @@ export const CatalogComponent = memo(
             title: "",
             columnParams: "",
             components: [
-              { name: "Intel H610", params: "" },
-              { name: "Intel B660", params: "" },
-              { name: "Intel B760", params: "" },
-              { name: "Intel H670", params: "" },
-              { name: "Intel H770", params: "" },
-              { name: "Intel Z690", params: "" },
-              { name: "Intel Z790", params: "" },
+              { name: "Intel H610", params: "&otherParams=chipset=Intel H610" },
+              // { name: "Intel B660", params: "&otherParams" },
+              { name: "Intel B760", params: "&otherParams=chipset=Intel B760" },
+              { name: "Intel H670", params: "&otherParams=chipset=Intel H670" },
+              { name: "Intel H770", params: "&otherParams=chipset=Intel H770" },
+              { name: "Intel Z690", params: "&otherParams=chipset=Intel Z690" },
+              { name: "Intel Z790", params: "&otherParams=chipset=Intel Z790" },
             ],
           },
           secondColumn: {
             title: "",
             columnParams: "",
             components: [
-              { name: "AMD A320", params: "" },
-              { name: "AMD A520", params: "" },
-              { name: "AMD B450", params: "" },
-              { name: "AMD B550", params: "" },
-              { name: "AMD B650", params: "" },
-              { name: "AMD X570", params: "" },
-              { name: "AMD X670", params: "" },
+              { name: "AMD A320", params: "&otherParams=chipset=AMD A320" },
+              { name: "AMD A520", params: "&otherParams=chipset=AMD A520" },
+              { name: "AMD B450", params: "&otherParams=chipset=AMD B450" },
+              { name: "AMD B550", params: "&otherParams=chipset=AMD B550" },
+              { name: "AMD B650", params: "&otherParams=chipset=AMD B650" },
+              { name: "AMD X570", params: "&otherParams=chipset=AMD X570" },
+              { name: "AMD X670", params: "&otherParams=chipset=AMD X670" },
             ],
           },
         },
@@ -99,30 +116,54 @@ export const CatalogComponent = memo(
         components: {
           firstColumn: {
             title: "Nvidia",
-            columnParams: "",
+            columnParams:
+              "/Catalog?componentType=gpu&otherParams=gpu_manufacturer=NVIDIA",
             components: [
-              { name: "GeForce RTX 4000", params: "" },
-              { name: "GeForce RTX 3000", params: "" },
-              { name: "GeForce RTX 2000", params: "" },
-              { name: "GeForce GTX 1600", params: "" },
-              { name: "GeForce GT/GTX 1000", params: "" },
-              { name: "GeForce GT 700", params: "" },
+              {
+                name: "GeForce RTX 4000",
+                params: "&otherParams=generation=4000",
+              },
+              {
+                name: "GeForce RTX 3000",
+                params: "&otherParams=generation=3000",
+              },
+              {
+                name: "GeForce RTX 2000",
+                params: "&otherParams=generation=2000",
+              },
+              {
+                name: "GeForce GTX 1600",
+                params: "&otherParams=generation=1600",
+              },
+              {
+                name: "GeForce GT/GTX 1000",
+                params: "&otherParams=generation=1000",
+              },
+              { name: "GeForce GT 700", params: "&otherParams=generation=700" },
             ],
           },
           secondColumn: {
             title: "AMD",
-            columnParams: "",
+            columnParams:
+              "/Catalog?componentType=gpu&otherParams=gpu_manufacturer=AMD",
             components: [
-              { name: "Radeon RX 7000", params: "" },
-              { name: "Radeon RX 6000", params: "" },
-              { name: "Radeon RX 500", params: "" },
+              {
+                name: "Radeon RX 7000",
+                params: "&otherParams=generation=7000",
+              },
+              {
+                name: "Radeon RX 6000",
+                params: "&otherParams=generation=6000",
+              },
+              { name: "Radeon RX 500", params: "&otherParams=generation=500" },
             ],
             innerColumn: {
               title: "Intel",
-              columnParams: "",
+              columnParams:
+                "/Catalog?componentType=gpu&otherParams=gpu_manufacturer=Intel",
               components: [
-                { name: "Arc A700", params: "" },
-                { name: "Arc A300", params: "" },
+                { name: "Arc A700", params: "&search=Arc A750,Arc A770" }, //TODO Спросить что писать тут
+                { name: "Arc A300", params: "&search=Arc A310,Arc A380" }, //TODO Спросить что писать тут
               ],
             },
           },
@@ -134,22 +175,46 @@ export const CatalogComponent = memo(
         components: {
           firstColumn: {
             title: "DIMM",
-            columnParams: "",
+            columnParams: "/Catalog?componentType=ram&form_factor=DIMM",
             components: [
-              { name: "DDR5", params: "" },
-              { name: "DDR4", params: "" },
-              { name: "DDR3L", params: "" },
-              { name: "DDR3", params: "" },
+              {
+                name: "DDR5",
+                params: "&otherParams=form_factor=DIMM&memory_type=DDR5",
+              },
+              {
+                name: "DDR4",
+                params: "&otherParams=form_factor=DIMM&memory_type=DDR4",
+              },
+              {
+                name: "DDR3L",
+                params: "&otherParams=form_factor=DIMM&memory_type=DDR3L",
+              },
+              {
+                name: "DDR3",
+                params: "&otherParams=form_factor=DIMM&memory_type=DDR3",
+              },
             ],
           },
           secondColumn: {
             title: "SO-DIMM",
-            columnParams: "",
+            columnParams: "/Catalog?componentType=ram&form_factor=SO-DIMM",
             components: [
-              { name: "DDR5", params: "" },
-              { name: "DDR4", params: "" },
-              { name: "DDR3L", params: "" },
-              { name: "DDR3", params: "" },
+              {
+                name: "DDR5",
+                params: "&otherParams=form_factor=SO-DIMM&memory_type=DDR5",
+              },
+              {
+                name: "DDR4",
+                params: "&otherParams=form_factor=SO-DIMM&memory_type=DDR4",
+              },
+              {
+                name: "DDR3L",
+                params: "&otherParams=form_factor=SO-DIMM&memory_type=DDR3L",
+              },
+              {
+                name: "DDR3",
+                params: "&otherParams=form_factor=SO-DIMM&memory_type=DDR3",
+              },
             ],
           },
         },
@@ -162,10 +227,16 @@ export const CatalogComponent = memo(
             title: "",
             columnParams: "",
             components: [
-              { name: "Охлаждение процессора", params: "" },
-              { name: "Охлаждение SSD", params: "" },
-              { name: "Корпусные вентиляторы", params: "" },
-              { name: "Термопаста и термопрокладки", params: "" },
+              {
+                name: "Охлаждение процессора",
+                params: "&componentType=cooler",
+              },
+              // { name: "Охлаждение SSD", params: "" }, //TODO Что тут писать
+              {
+                name: "Корпусные вентиляторы",
+                params: "&componentType=case_fans",
+              },
+              // { name: "Термопаста и термопрокладки", params: "" },
             ],
           },
         },
@@ -178,20 +249,32 @@ export const CatalogComponent = memo(
             title: "Мощность от",
             columnParams: "",
             components: [
-              { name: "400 Вт", params: "" },
-              { name: "600 Вт", params: "" },
-              { name: "800 Вт", params: "" },
-              { name: "1000 Вт", params: "" },
+              { name: "400 Вт", params: "&otherParams=power_output=400 Вт" },
+              { name: "600 Вт", params: "&otherParams=power_output=600 Вт" },
+              { name: "800 Вт", params: "&otherParams=power_output=800 Вт" },
+              { name: "1000 Вт", params: "&otherParams=power_output=1000 Вт" },
             ],
           },
           secondColumn: {
             title: "Сертификат",
             columnParams: "",
             components: [
-              { name: "80 Plus Platinum", params: "" },
-              { name: "80 Plus Gold", params: "" },
-              { name: "80 Plus Bronze", params: "" },
-              { name: "80 Plus", params: "" },
+              {
+                name: "80 Plus Platinum",
+                params: "&otherParams=80_plus_certification=Platinum",
+              },
+              {
+                name: "80 Plus Gold",
+                params: "&otherParams=80_plus_certification=Gold",
+              },
+              {
+                name: "80 Plus Bronze",
+                params: "&otherParams=80_plus_certification=Bronze",
+              },
+              {
+                name: "80 Plus",
+                params: "&otherParams=80_plus_certification=Standard,Certified",
+              },
             ],
           },
         },
@@ -204,21 +287,42 @@ export const CatalogComponent = memo(
             title: "Типоразмер",
             columnParams: "",
             components: [
-              { name: "Full-Tower", params: "" },
-              { name: "Mid-Tower", params: "" },
-              { name: "Mini-Tower", params: "" },
-              { name: "Slim", params: "" },
-              { name: "SFF", params: "" },
+              {
+                name: "Full-Tower",
+                params: "&otherParams=form_factor=Full-Tower",
+              },
+              {
+                name: "Mid-Tower",
+                params: "&otherParams=form_factor=Mid-Tower",
+              },
+              {
+                name: "Mini-Tower",
+                params: "&otherParams=form_factor=Mini-Tower",
+              },
+              { name: "Slim", params: "&otherParams=form_factor=Slim" },
+              { name: "SFF", params: "&otherParams=form_factor=SFF" },
             ],
           },
           secondColumn: {
             title: "Форм-фактор платы ",
             columnParams: "",
             components: [
-              { name: "E-ATX", params: "" },
-              { name: "ATX", params: "" },
-              { name: "Micro-ATX", params: "" },
-              { name: "Mini-ITX", params: "" },
+              {
+                name: "E-ATX",
+                params: "&otherParams=compatible_motherboards=E-ATX",
+              },
+              {
+                name: "ATX",
+                params: "&otherParams=compatible_motherboards=ATX",
+              },
+              {
+                name: "Micro-ATX",
+                params: "&otherParams=compatible_motherboards=Micro-ATX",
+              },
+              {
+                name: "Mini-ITX",
+                params: "&otherParams=compatible_motherboards=Mini-ITX",
+              },
             ],
           },
         },
@@ -231,29 +335,32 @@ export const CatalogComponent = memo(
             title: "",
             columnParams: "",
             components: [
-              { name: "SSD M2", params: "" },
-              { name: "SSD mSATA", params: "" },
-              { name: "SSD 2.5", params: "" },
+              {
+                name: "SSD M2",
+                params: "&otherParams=interface=mSATA (mini SATA)",
+              },
+              { name: "SSD mSATA", params: "&otherParams=form_factor=M.2" },
+              { name: "SSD 2.5", params: "&otherParams=form_factor=2.5" },
             ],
           },
           secondColumn: {
             title: "",
             columnParams: "",
             components: [
-              { name: "HDD 3.5″", params: "" },
-              { name: "HDD 2.5″", params: "" },
+              { name: "HDD 3.5″", params: '&otherParams=form_factor=3.5"' },
+              { name: "HDD 2.5″", params: '&otherParams=form_factor=2.5"' },
             ],
           },
         },
       },
     ];
-    //TODO сделать соединение логики для модалки и для страницы поиска, брать данные из ссылки, тип компонента уже там есть, везде использовать не searchTableName и тип из ссылки
+
     return (
       <div className="min-w-full max-w-[1212px] mx-[15px] h-full overflow-y-auto overscroll-contain grid grid-cols-4 gap-[20px] max-lg:gap-[10px] max-md:gap-[5px] max-xl:grid-cols-3 max-lg:grid-cols-2 max-sm:grid-cols-1 max-lg:min-h-[100%]">
         {catalogItemsArr.map((column, index) => {
           return (
             <div className="flex flex-col self-start " key={index}>
-              <Link
+              <Link //НАЗВАНИЕ БЛОКА - Процессор, мат плата и тд
                 href={column.titleParams}
                 className="text-[20px] font-[800] mb-[10px] text-left hover:text-[#0260e8]"
                 onClick={() => setShowCatalog && setShowCatalog(false)}
@@ -266,8 +373,12 @@ export const CatalogComponent = memo(
                   {column.components.firstColumn.title &&
                     (column.title.slug === "gpu" ||
                     column.title.slug === "ram" ? (
-                      <Link
-                        href={"/"}
+                      <Link //НАЗВАНИЕ ПЕРВОЙ КОЛОНКИ - nvidia, dimm, so-dim и тд
+                        href={
+                          column.components.firstColumn.columnParams
+                            ? column.components.firstColumn.columnParams
+                            : "#"
+                        }
                         className="text-[17px] font-[800] mb-[2px] text-left whitespace-nowrap"
                         onClick={() => setShowCatalog && setShowCatalog(false)}
                       >
@@ -282,7 +393,7 @@ export const CatalogComponent = memo(
                     (element, index) => {
                       return (
                         <Link
-                          href="/"
+                          href={column.titleParams + element.params}
                           className="text-left text-[14px] font-[300]"
                           key={index}
                           onClick={() =>
@@ -301,8 +412,12 @@ export const CatalogComponent = memo(
                     column.components.secondColumn.title &&
                     (column.title.slug === "gpu" ||
                     column.title.slug === "ram" ? (
-                      <Link
-                        href={"/"}
+                      <Link //НАЗВАНИЕ ВТОРОЙ КОЛОНКИ - intel
+                        href={
+                          column.components.secondColumn.columnParams
+                            ? column.components.secondColumn.columnParams
+                            : "#"
+                        }
                         className="text-[17px] font-[800] mb-[2px] text-left whitespace-nowrap"
                         onClick={() => setShowCatalog && setShowCatalog(false)}
                       >
@@ -318,7 +433,7 @@ export const CatalogComponent = memo(
                       (element, index) => {
                         return (
                           <Link
-                            href="/"
+                            href={column.titleParams + element.params}
                             className="text-left text-[14px] font-[300] whitespace-nowrap"
                             key={index}
                             onClick={() =>
@@ -331,16 +446,26 @@ export const CatalogComponent = memo(
                       }
                     )}
                   {column.components.secondColumn?.innerColumn && (
-                    <div>
-                      <h4 className="text-[17px] font-[800] mb-[2px] text-left whitespace-nowrap">
+                    <div className="flex flex-col items-start">
+                      <Link //НАЗВАНИЕ ВНУТРЕННЕЙ КОЛОНКИ
+                        href={
+                          column.components.secondColumn.innerColumn
+                            .columnParams
+                            ? column.components.secondColumn.innerColumn
+                                .columnParams
+                            : "#"
+                        }
+                        onClick={() => setShowCatalog && setShowCatalog(false)}
+                        className="text-[17px] font-[800] mb-[2px] text-left whitespace-nowrap w-full"
+                      >
                         {column.components.secondColumn?.innerColumn.title}
-                      </h4>
+                      </Link>
                       <div className="flex flex-col">
                         {column.components.secondColumn?.innerColumn.components.map(
                           (element, index) => {
                             return (
                               <Link
-                                href="/"
+                                href={column.titleParams + element.params}
                                 className="text-left text-[14px] font-[300] whitespace-nowrap"
                                 key={index}
                                 onClick={() =>

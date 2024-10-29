@@ -19,7 +19,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   //TODO: Сделать окно с выводом компонентов в сборке, по клику на купить сборку, то же самое в избранном
-  //TODO: Начать делать каталог
+
   //TODO: Сделать подсказки при поиске
   return (
     <html lang="en">
