@@ -1,7 +1,9 @@
 import React, {
+  Dispatch,
   FormEvent,
   FormEventHandler,
   memo,
+  SetStateAction,
   useEffect,
   useRef,
   useState,
@@ -13,7 +15,11 @@ import axios from "axios";
 import { IHints } from "@/app/types";
 
 export const SearchComponentsInput = memo(
-  ({ setSearchInput }: { setSearchInput: any }) => {
+  ({
+    setSearchInput,
+  }: {
+    setSearchInput: Dispatch<SetStateAction<string>>;
+  }) => {
     const [showHints, setShowHints] = useState(false);
     const [inputTextForHints, setInputTextForHints] = useState("");
     const [hintsArr, setHintsArr] = useState<IHints[] | null>(null);

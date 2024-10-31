@@ -51,7 +51,7 @@ export function SearchComponents<T extends ISearchComponents>({
   const { getAllIds } = useComponentsStore();
   const searchParams = useSearchParams();
   const params = Object.fromEntries(searchParams.entries());
-  console.log(params);
+
   function getLinkFromFilters() {
     const groupFiltersObject = groupBy(
       filtersStore[searchTableName.slug],
