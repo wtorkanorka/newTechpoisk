@@ -4,43 +4,43 @@
 
 @font-face {
   font-family: "sans-regular";
-  src: url("./assets/fonts/SourceSansPro-Regular.ttf");
+  src: url("/assets/fonts/SourceSansPro-Regular.ttf");
   font-weight: 400;
   font-style: normal;
 }
 @font-face {
   font-family: "sans-light";
-  src: url("./assets/fonts/SourceSansPro-Light.ttf");
+  src: url("/assets/fonts/SourceSansPro-Light.ttf");
   font-weight: 300;
   font-style: normal;
 }
 @font-face {
   font-family: "sans-semiBold";
-  src: url("./assets/fonts/SourceSansPro-SemiBold.ttf");
+  src: url("/assets/fonts/SourceSansPro-SemiBold.ttf");
   font-weight: 600;
   font-style: normal;
 }
 @font-face {
   font-family: "inter-light";
-  src: url("./assets/fonts/Inter-Light.otf");
+  src: url("/assets/fonts/Inter-Light.otf");
   font-weight: 300;
   font-style: normal;
 }
 @font-face {
   font-family: "inter-medium";
-  src: url("./assets/fonts/Inter-Medium.otf");
+  src: url("/assets/fonts/Inter-Medium.otf");
   font-weight: 500;
   font-style: normal;
 }
 @font-face {
   font-family: "inter-regular";
-  src: url("./assets/fonts/Inter-Regular.otf");
+  src: url("/assets/fonts/Inter-Regular.otf");
   font-weight: 400;
   font-style: normal;
 }
 @font-face {
   font-family: "alatsi-regular";
-  src: url("./assets/fonts/Alatsi-Regular.ttf");
+  src: url("/assets/fonts/Alatsi-Regular.ttf");
   font-weight: 400;
   font-style: normal;
 }

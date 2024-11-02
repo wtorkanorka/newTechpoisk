@@ -1,7 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import React from "react";
-import spongeBobGif from "@/app/assets/images/spongeBob.gif";
+import spongeBobGif from "@/assets/images/spongeBob.gif";
 
 export default function page() {
   return (

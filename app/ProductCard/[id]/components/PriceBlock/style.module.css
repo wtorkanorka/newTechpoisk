@@ -26,15 +26,6 @@
   line-height: normal;
 }
 
-.price span {
-  font-family: inter-regular;
-  color: #000;
-  font-size: 26px;
-  font-style: normal;
-  font-weight: 400;
-  line-height: normal;
-}
-
 .buttonContainer {
   display: flex;
   gap: 14px;

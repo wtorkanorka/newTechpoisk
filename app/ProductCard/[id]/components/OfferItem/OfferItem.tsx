@@ -1,11 +1,11 @@
 import Image from "next/image";
 
-import settingImg from "@/app/assets/icons/settingImg.svg";
+import settingImg from "@/assets/icons/settingImg.svg";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 
-import styles from "./style.module.css";
-import { namesSearchTableName, useComponentsStore } from "@/app/hooks/hooks";
+// import styles from "./style.module.css";
+import { namesSearchTableName, useComponentsStore } from "@/hooks/hooks";
 import { IComponentsResults, IOffers } from "@/app/types";
 
 export function OfferItem({
@@ -87,6 +87,7 @@ export function OfferItem({
       });
     }
   }
+  console.log(data);
   return (
     <div key={offer.id}>
       <div className="max-lg:hidden">
@@ -112,20 +113,18 @@ export function OfferItem({
             <div className="max-w-[359px]">
               <h3 className="text-[22px]">{data?.name} </h3>
 
-              <div className="flex items-center gap-[5px] flex-wrap">
-                {/* {data?.propertyCategories.properties
-                  .slice(0, 10)
-                  .map((e: any) => {
-                    return (
-                      <p
-                        key={e.id}
-                        className={`${styles.description} text-[16px] max-lg:font-medium text-[#00000050]`}
-                      >
-                        {e.value}
-                      </p>
-                    );
-                  })} */}
-              </div>
+              {/* <div className="flex items-center gap-[5px] flex-wrap">
+                {data?.propertyCategories.properties.map((e) => {
+                  return (
+                    <p
+                      key={e.id}
+                      className={`text-[20px] font-[300] text-[#00000050]`}
+                    >
+                      {e.value}
+                    </p>
+                  );
+                })}
+              </div> */}
             </div>
           </a>
           <button
@@ -200,8 +199,10 @@ export function OfferItem({
               )}
             </div>
           </button>
-          <h3 className={styles.price}>{(offer?.price).toLocaleString()} ₽</h3>
-          <Link className={styles.store} href={offer.buyLink} target="_blank">
+          <h3 className={"font-[600] text-[26px] max-lg:text-[16px]"}>
+            {(offer?.price).toLocaleString()} ₽
+          </h3>
+          <Link className={"relative"} href={offer.buyLink} target="_blank">
             <Image
               width={96}
               height={96}
@@ -214,10 +215,7 @@ export function OfferItem({
         </div>
         <div className="w-full bg-[#9E9E9E25] h-[1px] my-[22px]" />
       </div>
-      <div
-        style={{ fontFamily: "source-sans-pro-regular" }}
-        className="lg:hidden mx-auto max-lg:bg-[#f7f8f9] max-lg:rounded-[14px] max-lg:flex max-lg:flex-col max-lg:gap-[15px] max-lg:p-[10px]"
-      >
+      <div className="lg:hidden mx-auto max-lg:bg-[#f7f8f9] max-lg:rounded-[14px] max-lg:flex max-lg:flex-col max-lg:gap-[15px] max-lg:p-[10px]">
         <div className="flex items-center justify-between">
           <Link
             href={offer.buyLink}
@@ -231,19 +229,17 @@ export function OfferItem({
               alt={"empty img"}
             />
             <div>
-              <h3 className="text-[14px] mb-[5px]">{data?.name} </h3>
+              <h3 className="text-[14px] font-[400] mb-[5px]">{data?.name} </h3>
 
               <div className="flex items-center gap-[5px] flex-wrap">
-                {/* {data?.propertyCategories.properties
-                  .slice(0, 10)
-                  .map((e: any) => {
+                {data?.propertyCategories.properties &&
+                  data?.propertyCategories.properties.slice(0, 10).map((e) => {
                     return (
                       <p key={e.id} className="text-[12px]  text-[#00000050]">
                         {e.value}
                       </p>
                     );
-                  })} */}
-                1234124
+                  })}
               </div>
             </div>
           </Link>

@@ -1,6 +1,6 @@
 "use client";
 import styles from "./style.module.css";
-import heartBlack from "@/app/assets/icons/black-heart.svg";
+import heartBlack from "@/assets/icons/black-heart.svg";
 // import heart from "../../../../../assets/icons/heart.svg";
 import graph from "../../../../../assets/icons/comparison-black-icon.svg";
 import Image from "next/image";
@@ -11,7 +11,7 @@ import {
   namesSearchTableName,
   useComponentsStore,
   useWishlistStore,
-} from "@/app/hooks/hooks";
+} from "@/hooks/hooks";
 import { IComponentsResults, IOffers } from "@/app/types";
 import { nanoid } from "@reduxjs/toolkit";
 
@@ -35,8 +35,8 @@ export const PriceBlock = ({
 
     if (sortedPrices[0] === sortedPrices[sortedPrices.length - 1]) {
       return (
-        <p className="max-lg:text-[20px] whitespace-nowrap">
-          <span className="max-lg:text-[24px]">
+        <p className="max-lg:text-[20px] text-[16px] font-[600] whitespace-nowrap">
+          <span className="max-lg:text-[24px] !font-[400]">
             {sortedPrices[0].toLocaleString()} ₽
           </span>
         </p>
@@ -45,11 +45,11 @@ export const PriceBlock = ({
       return (
         <p className="max-lg:text-[20px] font-extrabold max-lg:font-medium whitespace-nowrap">
           от{" "}
-          <span className="max-lg:text-[24px] font-extrabold max-lg:font-medium ">
+          <span className="max-lg:text-[24px] text-[32px] font-[600] ">
             {sortedPrices[0].toLocaleString()}
           </span>{" "}
           до{" "}
-          <span className="max-lg:text-[24px] font-extrabold max-lg:font-medium">
+          <span className="max-lg:text-[24px] text-[32px] font-[600] ">
             {sortedPrices[sortedPrices.length - 1].toLocaleString()} ₽
           </span>
         </p>

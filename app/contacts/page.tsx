@@ -1,9 +1,9 @@
-import { NavigationComponent } from "@/app/components/NavigationComponent/NavigationComponent";
+import { NavigationComponent } from "@/components/NavigationComponent/NavigationComponent";
 import Image from "next/image";
 import Link from "next/link";
 import React, { useState } from "react";
-import telegramIcon from "@/app/assets/icons/telegram-blue.svg";
-import mailIcon from "@/app/assets/icons/mail-blue.svg";
+import telegramIcon from "@/assets/icons/telegram-blue.svg";
+import mailIcon from "@/assets/icons/mail-blue.svg";
 // import smileFace from "@/assets/images/smileFace.jpg";
 
 export default function page() {

@@ -1,22 +1,22 @@
 "use client";
 import Image from "next/image";
-import { ConfiguratorRow } from "./components/configuratorRow/ConfiguratorRow";
-import ModalPortal from "./components/modalPortal/ModalPortal";
+import { ConfiguratorRow } from "@/components/configuratorRow/ConfiguratorRow";
+import ModalPortal from "@/components/modalPortal/ModalPortal";
 import { useEffect, useState } from "react";
 
 import {
   useComponentsStore,
   useSearchTableName,
   useWishlistStore,
-} from "./hooks/hooks";
-import { SearchComponents } from "./components/searchComponents/SearchComponents";
-import { FeedbackComponent } from "./components/feedbackComponent/FeedbackComponent";
-import { BuyConfigurationComponent } from "./components/buyConfigurationComponent/BuyConfigurationComponent";
+} from "@/hooks/hooks";
+import { SearchComponents } from "@/components/searchComponents/SearchComponents";
+import { FeedbackComponent } from "@/components/feedbackComponent/FeedbackComponent";
+import { BuyConfigurationComponent } from "@/components/buyConfigurationComponent/BuyConfigurationComponent";
 import axios from "axios";
 import { IComponentsResults, IComponentsResultsInStore } from "./types";
 import { nanoid } from "@reduxjs/toolkit";
-import startCircleIcon from "@/app/assets/icons/star_circle-icon.svg";
-import userCircleIcon from "@/app/assets/icons/user_circle-icon.svg";
+import startCircleIcon from "@/assets/icons/star_circle-icon.svg";
+import userCircleIcon from "@/assets/icons/user_circle-icon.svg";
 import Link from "next/link";
 
 export default function Home() {
@@ -168,9 +168,9 @@ export default function Home() {
     <>
       <h1 className="text-[32px] font-[400] mt-[50px]">Конфигуратор ПК</h1>
       <div className="w-full h-[1px] bg-[#dde1e7] mt-[15px] mb-[30px] max-lg:hidden" />
-      <div className="grid grid-cols-2 my-[18px] max-ssm:grid-cols-1 gap-[11px]">
+      <div className="grid grid-cols-2 my-[18px] max-ssm:grid-cols-1 gap-[11px] lg:hidden">
         <Link
-          href="/pcbuilding"
+          href="/pages/pcbuilding"
           className="rounded-[8px] bg-[#ffdce0] flex justify-between items-center p-[6px] w-full"
         >
           <p className="text-[14px] font-[400]">Гид по сборке</p>

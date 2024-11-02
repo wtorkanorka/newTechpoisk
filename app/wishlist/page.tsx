@@ -1,11 +1,11 @@
 "use client";
 import React, { useEffect, useRef, useState } from "react";
 
-import { useFiltersName, useWishlistStore } from "../hooks/hooks";
+import { useFiltersName, useWishlistStore } from "../../hooks/hooks";
 
 import { WishListComponentRow } from "./components/WishListComponentRow";
-import { IWishList } from "../redux/services/wishlistSlice";
-import { SelectFilterComponent } from "../components/selectFilterComponent/SelectFilterComponent";
+import { IWishList } from "../../redux/services/wishlistSlice";
+import { SelectFilterComponent } from "../../components/selectFilterComponent/SelectFilterComponent";
 import { ISelectFilterComponent } from "../types";
 import {
   configuratorType,

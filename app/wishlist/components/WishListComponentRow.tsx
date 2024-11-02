@@ -1,6 +1,6 @@
 "use client";
 
-import { IWishList } from "@/app/redux/services/wishlistSlice";
+import { IWishList } from "@/redux/services/wishlistSlice";
 import Image from "next/image";
 import Link from "next/link";
 import React, {
@@ -10,11 +10,11 @@ import React, {
   useEffect,
   useState,
 } from "react";
-import settingImg from "@/app/assets/icons/settingImg.svg";
-import arrowDownWhite from "@/app/assets/icons/arrow-down-white.svg";
-import { ProductManagerButton } from "@/app/components/productManagerButton/ProductManagerButton";
-import { useIsMobileWindow, useWishlistStore } from "@/app/hooks/hooks";
-import { SellersComponents } from "@/app/components/productRowComponent/components/SellersComponents";
+import settingImg from "@/assets/icons/settingImg.svg";
+import arrowDownWhite from "@/assets/icons/arrow-down-white.svg";
+import { ProductManagerButton } from "@/components/productManagerButton/ProductManagerButton";
+import { useIsMobileWindow, useWishlistStore } from "@/hooks/hooks";
+import { SellersComponents } from "@/components/productRowComponent/components/SellersComponents";
 import { IOffers } from "@/app/types";
 
 export const WishListComponentRow = memo(

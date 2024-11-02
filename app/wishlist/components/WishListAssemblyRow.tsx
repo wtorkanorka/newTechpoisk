@@ -1,4 +1,4 @@
-import { IWishList } from "@/app/redux/services/wishlistSlice";
+import { IWishList } from "@/redux/services/wishlistSlice";
 import { IComponentsResultsInStore } from "@/app/types";
 import { Dispatch } from "@reduxjs/toolkit";
 import Image from "next/image";
@@ -10,12 +10,12 @@ import React, {
   useRef,
   useState,
 } from "react";
-import settingImg from "@/app/assets/icons/settingImg.svg";
-import arrowDownWhite from "@/app/assets/icons/arrow-down-white.svg";
-import { ProductManagerButton } from "@/app/components/productManagerButton/ProductManagerButton";
-import { useWishlistStore } from "@/app/hooks/hooks";
-import arrowBlack from "@/app/assets/icons/arrow-down-black-icon.svg";
-import edit from "@/app/assets/icons/edit.svg";
+import settingImg from "@/assets/icons/settingImg.svg";
+import arrowDownWhite from "@/assets/icons/arrow-down-white.svg";
+import { ProductManagerButton } from "@/components/productManagerButton/ProductManagerButton";
+import { useWishlistStore } from "@/hooks/hooks";
+import arrowBlack from "@/assets/icons/arrow-down-black-icon.svg";
+import edit from "@/assets/icons/edit.svg";
 export interface configuratorType {
   id: string | number;
   name: string;

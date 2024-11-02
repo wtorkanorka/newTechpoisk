@@ -1,8 +1,8 @@
 "use client";
-import { NavigationComponent } from "@/app/components/NavigationComponent/NavigationComponent";
+import { NavigationComponent } from "@/components/NavigationComponent/NavigationComponent";
 import React, { useRef, useState } from "react";
-import telegramIcon from "@/app/assets/icons/telegram-blue.svg";
-import mailIcon from "@/app/assets/icons/mail-blue.svg";
+import telegramIcon from "@/assets/icons/telegram-blue.svg";
+import mailIcon from "@/assets/icons/mail-blue.svg";
 import Image from "next/image";
 
 import styles from "./page.module.css";

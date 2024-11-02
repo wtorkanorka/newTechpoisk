@@ -1,11 +1,11 @@
 "use client";
 
-import { NavigationComponent } from "@/app/components/NavigationComponent/NavigationComponent";
+import { NavigationComponent } from "@/components/NavigationComponent/NavigationComponent";
 import Image from "next/image";
 import Link from "next/link";
 import { useParams } from "next/navigation";
 import React, { useState } from "react";
-import spongeBobGif from "@/app/assets/images/spongeBob.gif";
+import spongeBobGif from "@/assets/images/spongeBob.gif";
 
 export default function About() {
   // const [currentComponent, setCurrentComponent] = useState("about_company");

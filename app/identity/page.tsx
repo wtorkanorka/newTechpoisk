@@ -1,4 +1,4 @@
-import { NavigationComponent } from "@/app/components/NavigationComponent/NavigationComponent";
+import { NavigationComponent } from "@/components/NavigationComponent/NavigationComponent";
 import React from "react";
 
 export default function page() {

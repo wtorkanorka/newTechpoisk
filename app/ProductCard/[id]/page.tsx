@@ -10,7 +10,7 @@ import { usePathname } from "next/navigation";
 import { CommonDescription } from "./components/Descriptions/CommonDescription";
 import settingImg from "../../../assets/images/testImage.png";
 import Image from "next/image";
-import arrow from "@/app/assets/icons/arrow-down-black-icon.svg";
+import arrow from "@/assets/icons/arrow-down-black-icon.svg";
 import axios from "axios";
 import { IComponentsResults } from "@/app/types";
 import { OffersComponent } from "./components/OffersComponent/OffersComponent";
@@ -121,7 +121,7 @@ export default function ProductCard() {
           </div>
           {isShowDescription && <CommonDescription data={data} />}
 
-          <h2 className="mt-[50px] text-[28px] max-lg:hidden">
+          <h2 className="mt-[50px] text-[28px] max-lg:hidden font-[400]">
             Цены на {data?.name}
           </h2>
           <div className="w-full border-t-2 border-[#dde1e7] mt-[10px] mb-[20px] max-lg:hidden" />

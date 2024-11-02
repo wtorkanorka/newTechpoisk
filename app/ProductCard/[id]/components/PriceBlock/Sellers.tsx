@@ -5,7 +5,7 @@ import Image from "next/image";
 import setting from "../../../../../assets/icons/setting-2.svg";
 
 import check from "../../../../../assets/icons/check.svg";
-import { namesSearchTableName, useComponentsStore } from "@/app/hooks/hooks";
+import { namesSearchTableName, useComponentsStore } from "@/hooks/hooks";
 import { IComponentsResults, IOffers } from "@/app/types";
 
 interface Sellers {
