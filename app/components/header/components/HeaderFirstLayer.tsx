@@ -20,13 +20,13 @@ export function HeaderFirstLayer() {
       <div className="flex items-center gap-[84px] max-lg:hidden">
         <div className="flex gap-[47px] items-center">
           <Link
-            href={"/"}
+            href={"/pcbuilding"}
             className="font-[300] text-[#9e9e9e] text-[17px] hover:text-[#777777]"
           >
             Гид по сборке
           </Link>
           <Link
-            href={"/"}
+            href={"/configurations"}
             className="font-[300] text-[#9e9e9e] text-[17px] hover:text-[#777777]"
           >
             Сборки пользователей

@@ -12,9 +12,16 @@ module.exports = {
   theme: {
     extend: {
       fontFamily: {
-        sans: ["sans-regular", "sans-light", "sans-semiBold"],
-        inter: ["inter-light", "inter-medium", "inter-regular"],
-        alatsi: ["alatsi-regular"],
+        // sans: ["sans-regular", "sans-light", "sans-semiBold"],
+        sansRegular: ["sans-regular"],
+        sansLight: ["sans-light"],
+        sansSemiBold: ["sans-semiBold"],
+        // inter: ["inter-light", "inter-medium", "inter-regular"],
+        interLight: ["inter-light"],
+        interMedium: ["inter-medium"],
+        interRegular: ["inter-regular"],
+        // alatsi: ["alatsi-regular"],
+        alatsiRegular: ["alatsi-regular"],
       },
       transitionProperty: {
         height: "height",

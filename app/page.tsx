@@ -2,23 +2,22 @@
 import Image from "next/image";
 import { ConfiguratorRow } from "./components/configuratorRow/ConfiguratorRow";
 import ModalPortal from "./components/modalPortal/ModalPortal";
-import { useCallback, useEffect, useState } from "react";
-import { useAppDispatch, useAppSelector } from "./redux/hooks";
+import { useEffect, useState } from "react";
+
 import {
-  searchTableNameSlice,
-  setNewSearchTableName,
-} from "./redux/services/searchTableNameSlice";
-import {
-  namesSearchTableName,
   useComponentsStore,
-  useIsMobileWindow,
   useSearchTableName,
+  useWishlistStore,
 } from "./hooks/hooks";
 import { SearchComponents } from "./components/searchComponents/SearchComponents";
 import { FeedbackComponent } from "./components/feedbackComponent/FeedbackComponent";
 import { BuyConfigurationComponent } from "./components/buyConfigurationComponent/BuyConfigurationComponent";
 import axios from "axios";
 import { IComponentsResults, IComponentsResultsInStore } from "./types";
+import { nanoid } from "@reduxjs/toolkit";
+import startCircleIcon from "@/app/assets/icons/star_circle-icon.svg";
+import userCircleIcon from "@/app/assets/icons/user_circle-icon.svg";
+import Link from "next/link";
 
 export default function Home() {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -27,7 +26,10 @@ export default function Home() {
     incompatible: number[];
   }>({ incompatible: [] });
 
-  const { getAllIds } = useComponentsStore();
+  const { componentsStore, getAllIds, getPriceOfConfigurator } =
+    useComponentsStore();
+  const [addedToWishList, setAddedToWishList] = useState(false);
+  const { addAssemblyToWishlist } = useWishlistStore();
 
   const [countOfComponents, setCountOfComponents] = useState<
     { componentType_Slug: string; count: number }[]
@@ -78,7 +80,6 @@ export default function Home() {
     },
   ]);
   const { searchTableName, setSearchTableName } = useSearchTableName();
-  const { componentsStore } = useComponentsStore();
 
   const handleOpenModal = () => {
     setIsModalOpen(true);
@@ -162,15 +163,63 @@ export default function Home() {
         ? !isIncompatible(componentsStore["cooler,liquid_cooling,case_fans"])
         : null,
   };
-
+  useEffect(() => setAddedToWishList(false), [componentsStore]);
   return (
     <>
       <h1 className="text-[32px] font-[400] mt-[50px]">Конфигуратор ПК</h1>
-      <div className="w-full h-[1px] bg-[#dde1e7] mt-[15px] mb-[30px]" />
+      <div className="w-full h-[1px] bg-[#dde1e7] mt-[15px] mb-[30px] max-lg:hidden" />
+      <div className="grid grid-cols-2 my-[18px] max-ssm:grid-cols-1 gap-[11px]">
+        <Link
+          href="/pcbuilding"
+          className="rounded-[8px] bg-[#ffdce0] flex justify-between items-center p-[6px] w-full"
+        >
+          <p className="text-[14px] font-[400]">Гид по сборке</p>
+          <Image src={startCircleIcon} width={38} height={38} alt="icon" />
+        </Link>
+        <Link
+          href="/configurations"
+          className="rounded-[8px] bg-[#e2eeff] flex justify-between items-center p-[6px] w-full"
+        >
+          <p className="text-[14px] font-[400]">Сборки пользователей</p>
+          <Image src={userCircleIcon} width={38} height={38} alt="icon" />
+        </Link>
+      </div>
       <div className="flex gap-[10px] max-lg:justify-between max-lg:items-center">
         <h2 className="text-[24px] font-[400] mb-[30px]">Системный блок</h2>
-        <button className="lg:hidden flex items-center text-center">
-          Сюда кнопку добавить
+
+        <button
+          onClick={() => {
+            if (!addedToWishList) {
+              addAssemblyToWishlist({
+                component: componentsStore,
+                price: getPriceOfConfigurator(),
+                name: "Сборка",
+                id: nanoid(),
+                isAssembly: true,
+              });
+              setAddedToWishList(true);
+            }
+          }}
+          className={`flex justify-between items-center gap-[5px] lg:hidden`}
+        >
+          <div
+            className={`rounded-[34px] flex items-center justify-between ${
+              addedToWishList ? "bg-[#FF5252]" : "bg-[#dde1e7]"
+            } min-w-[30px] min-h-[30px] p-[6px] hover:opacity-50`}
+          >
+            <svg
+              width="19"
+              height="19"
+              viewBox="0 0 19 19"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M15.2944 4.13663C14.5149 3.35733 13.4817 2.88169 12.3814 2.79563C11.281 2.70957 10.1861 3.01876 9.29438 3.66735C8.35883 2.97342 7.19437 2.65876 6.0355 2.78673C4.87662 2.91471 3.80941 3.4758 3.04877 4.35704C2.28813 5.23827 1.89057 6.37418 1.93614 7.53602C1.98172 8.69786 2.46704 9.79934 3.29438 10.6186L7.86055 15.1795C8.24292 15.5548 8.7579 15.7651 9.29438 15.7651C9.83086 15.7651 10.3458 15.5548 10.7282 15.1795L15.2944 10.6186C16.1529 9.75724 16.6348 8.5921 16.6348 7.37763C16.6348 6.16315 16.1529 4.99801 15.2944 4.13663ZM14.2576 9.60673L9.69144 14.1603C9.63948 14.2126 9.57763 14.2541 9.50948 14.2825C9.44133 14.3108 9.36822 14.3254 9.29438 14.3254C9.22054 14.3254 9.14743 14.3108 9.07927 14.2825C9.01112 14.2541 8.94928 14.2126 8.89732 14.1603L4.33114 9.58473C3.75449 8.99691 3.43159 8.20728 3.43159 7.38496C3.43159 6.56264 3.75449 5.77301 4.33114 5.18519C4.91876 4.60664 5.71127 4.28223 6.53702 4.28223C7.36278 4.28223 8.15529 4.60664 8.74291 5.18519C8.81126 5.25392 8.89259 5.30847 8.98219 5.34569C9.07179 5.38292 9.1679 5.40209 9.26497 5.40209C9.36203 5.40209 9.45814 5.38292 9.54774 5.34569C9.63735 5.30847 9.71867 5.25392 9.78702 5.18519C10.3746 4.60664 11.1672 4.28223 11.9929 4.28223C12.8187 4.28223 13.6112 4.60664 14.1988 5.18519C14.7834 5.76531 15.1169 6.55065 15.1279 7.373C15.1389 8.19534 14.8265 8.98928 14.2576 9.58473V9.60673Z"
+                fill={addedToWishList ? "white" : "black"}
+              />
+            </svg>
+          </div>
         </button>
       </div>
       <div className="flex gap-[10px] items-start justify-between max-lg:flex-col">
