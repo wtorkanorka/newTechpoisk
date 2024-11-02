@@ -90,11 +90,11 @@ export function BuyConfigurationComponent() {
           {extractComponentsFromStore().map((elem) => {
             return (
               <div
-                key={elem.id}
+                key={elem.selectedOffer.id}
                 className="flex items-center justify-between border-b border-solid border-gray-300  py-[24px] "
               >
                 <Link
-                  href={`/ProductPage/${elem.id}`}
+                  href={`/ProductCard/${elem.id}`}
                   className="flex items-center"
                 >
                   <Image

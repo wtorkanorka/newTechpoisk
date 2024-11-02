@@ -87,7 +87,7 @@ export function OfferItem({
       });
     }
   }
-  console.log(data);
+
   return (
     <div key={offer.id}>
       <div className="max-lg:hidden">
