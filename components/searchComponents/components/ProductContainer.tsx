@@ -52,12 +52,10 @@ export const ProductContainer = memo(
 
         {!isLoading && !isError && fetchStates.dataState?.next && (
           <button
-            className="min-h-[80px] w-full bg-[#0260e8] p-[10p] border-[#c4c4c4] text-[32px] text-[white] rounded-[50px] hover:opacity-50"
+            className="min-h-[80px] w-full p-[10p] bg-[transparent]"
             ref={ref}
             onClick={() => setPageState((prev) => prev + 1)}
-          >
-            Загрузить дополнительно
-          </button>
+          />
         )}
         {isLoading && <SkeletSearchComponentsComponent />}
       </div>

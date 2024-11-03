@@ -20,14 +20,11 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  //TODO: Сделать окно с выводом компонентов в сборке, по клику на купить сборку, то же самое в избранном
-
-  //TODO: Сделать подсказки при поиске
   return (
     <html lang="en">
-      <ReduxProvider>
-        <Suspense fallback={<div>Загрузка ...</div>}>
-          <body className={`min-h-screen`}>
+      <body className={`min-h-screen`}>
+        <ReduxProvider>
+          <Suspense fallback={<div>Загрузка ...</div>}>
             <Metrika />
             <Header />
             <main className="max-w-[1300px] px-[15px] flex-1 flex flex-col mx-auto w-full h-full min-h-[calc(100vh-252px-188px)]">
@@ -36,9 +33,9 @@ export default function RootLayout({
             <Footer />
             <div id="modal-root" />
             <NavBar />
-          </body>
-        </Suspense>
-      </ReduxProvider>
+          </Suspense>
+        </ReduxProvider>
+      </body>
     </html>
   );
 }
