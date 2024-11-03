@@ -170,7 +170,7 @@ export default function Home() {
       <div className="w-full h-[1px] bg-[#dde1e7] mt-[15px] mb-[30px] max-lg:hidden" />
       <div className="grid grid-cols-2 my-[18px] max-ssm:grid-cols-1 gap-[11px] lg:hidden">
         <Link
-          href="/pages/pcbuilding"
+          href="/pcbuilding"
           className="rounded-[8px] bg-[#ffdce0] flex justify-between items-center p-[6px] w-full"
         >
           <p className="text-[14px] font-[400]">Гид по сборке</p>
